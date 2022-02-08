@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<root>
+    <query_cliente  ><![CDATA[
+                select
+                    row_number() over ( partition by customer_id order by customer_id, ohduedate desc) No,
+                    datos.customer_id, datos.co_id, datos.dn_num, datos.nombre, datos.identificacion, datos.tipo_cliente, datos.correo,
+                    sum(nvl(saldoNoVencido,0)+nvl(saldovencido,0)) over ( partition by customer_id order by customer_id) saldo_total,
+                    sum(saldoNoVencido) over ( partition by customer_id order by customer_id) saldo_novencido,
+                    sum(saldovencido) over ( partition by customer_id order by customer_id) saldo_vencido,
+                    count(*) over ( partition by customer_id order by customer_id) cantidad_documentos,
+                    datos.id2, datos.docid, datos.doc, datos.refe, datos.npe, datos.lectura, datos.factura, datos.emision, datos.vencimiento, datos.diasmora, datos.saldo, datos.saldovencido, datos.saldoNovencido, datos.ohduedate,
+                    (SELECT id_ciclo FROM smart.VW_ODA_SUSCNOFACT@open_hond WHERE contrato = datos.customer_id AND ROWNUM = 1) ciclo
+                    from (
+                        SELECT
+                              contrato customer_id     ,
+                              '' co_id                 ,
+                              '' dn_num          ,
+                              nombre                   ,
+                              '' Identificacion        ,
+                              catdesc Tipo_Cliente   ,
+                              '' Correo,
+                              nvl(sum(case when (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2))  >0 then (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2)) end),0)                 Saldo_total,
+                              nvl(sum(case when fechavcto<trunc(sysdate) then (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2)) end),0)    Saldo_Vencido,
+                              nvl(count(*) -1 ,0)                                                  Cantidad_Documentos ,
+                              contrato              id2,
+                              case when vlrapagar>0 then cupon      end               docid,
+                              ''                    doc,
+                              case when vlrapagar>0 then cupon      end               refe,
+                              ''                    npe,
+                              0                     Lectura,
+                              'FA'                  Factura,
+                              to_char(fechageneracion,'dd/MM/yyyy')             Emision,
+                              to_char(fechavcto,'dd/MM/yyyy')                   Vencimiento,
+                              nvl(Round((trunc(sysdate) - fechavcto),0),0)      diasMora,
+                              nvl(sum(case when (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2))>0 then (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2)) end),0)  Saldo,
+                              nvl(sum(case when fechavcto>=trunc(sysdate) then (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2)) end ),0)SaldoNoVencido,
+                              nvl(sum(case when fechavcto<trunc(sysdate) then (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2)) end ),0)SaldoVencido,
+                              fechavcto ohduedate
+                              FROM (
+                                    select  distinct contrato, cupon, fechavcto, vlrapagar,vlrcupon, nombre, fechageneracion, catdesc
+                                    FROM smart.vwinvoiceswithbalance2@open_hond
+                                    WHERE contrato=  {CLIENTE}
+                                    AND nvl(DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon),0) >= 0
+                              ) DATOS
+                        group by
+                            contrato,
+                            nombre,
+                            cupon,catdesc,
+                            to_char(fechageneracion,'dd/MM/yyyy'),
+                            to_char(fechavcto,'dd/MM/yyyy'),
+                            nvl(Round((trunc(sysdate) - fechavcto),0),0),
+                            fechavcto, case when vlrapagar>0 then cupon end
+                    ) datos
+                    order by to_date(vencimiento,'dd/MM/yyyy') asc
+    ]]></query_cliente>
+
+
+
+
+    <query_telefono><![CDATA[
+                select
+                    row_number() over ( partition by customer_id order by customer_id, ohduedate desc) No,
+                    datos.customer_id, datos.co_id, datos.dn_num, datos.nombre, datos.identificacion, datos.tipo_cliente, datos.correo,
+                    sum(nvl(saldoNoVencido,0)+nvl(saldovencido,0)) over ( partition by customer_id order by customer_id) saldo_total,
+                    sum(saldoNoVencido) over ( partition by customer_id order by customer_id) saldo_novencido,
+                    sum(saldovencido) over ( partition by customer_id order by customer_id) saldo_vencido,
+                    count(*) over ( partition by customer_id order by customer_id) cantidad_documentos,
+                    datos.id2, datos.docid, datos.doc, datos.refe, datos.npe, datos.lectura, datos.factura, datos.emision, datos.vencimiento, datos.diasmora, datos.saldo, datos.saldovencido, datos.saldoNovencido, datos.ohduedate,
+                    (SELECT id_ciclo FROM smart.VW_ODA_SUSCNOFACT@open_hond WHERE contrato = datos.customer_id AND ROWNUM = 1) ciclo
+                    from (
+                        SELECT
+                              contrato customer_id     ,
+                              '' co_id                 ,
+                              '' dn_num          ,
+                              nombre                   ,
+                              '' Identificacion        ,
+                              catdesc Tipo_Cliente   ,
+                              '' Correo,
+                              nvl(sum(case when (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2))  >0 then (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2)) end),0)                 Saldo_total,
+                              nvl(sum(case when fechavcto<trunc(sysdate) then (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2)) end),0)    Saldo_Vencido,
+                              nvl(count(*) -1 ,0)                                                  Cantidad_Documentos ,
+                              contrato              id2,
+                              case when vlrapagar>0 then cupon      end                 docid,
+                              ''                    doc,
+                              case when vlrapagar>0 then cupon      end                 refe,
+                              ''                    npe,
+                              0                     Lectura,
+                              'FA'                  Factura,
+                              to_char(fechageneracion,'dd/MM/yyyy')             Emision,
+                              to_char(fechavcto,'dd/MM/yyyy')                   Vencimiento,
+                              nvl(Round((trunc(sysdate) - fechavcto),0),0)      diasMora,
+                              nvl(sum(case when (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2))>0 then (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2)) end),0)  Saldo,
+                              nvl(sum(case when fechavcto>=trunc(sysdate) then (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2)) end ),0)SaldoNoVencido,
+                              nvl(sum(case when fechavcto<trunc(sysdate) then (ROUND(  (  DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon)* NVL (/*vtasa_cambio*/1, 1))* DECODE(smart.ser_obtener_tasa_cambio@open_hond(fechageneracion),0, /*TasaDia*/NVL (get_parametro_dolar (), 0) ,smart.ser_obtener_tasa_cambio@open_hond(fechageneracion)),2)) end ),0)SaldoVencido,
+                              fechavcto ohduedate
+                              FROM (
+                                    select  distinct contrato, cupon, fechavcto, vlrapagar,vlrcupon, nombre, fechageneracion, catdesc
+                                    FROM smart.vwinvoiceswithbalance2@open_hond
+                                    WHERE contrato=  {TELEFONO}
+                                    AND nvl(DECODE (SIGN ((vlrapagar - vlrcupon)),-1, vlrapagar,0, vlrapagar,1, vlrcupon),0) >= 0
+                              ) DATOS
+                        group by
+                            contrato,
+                            nombre,
+                            cupon,catdesc,
+                            to_char(fechageneracion,'dd/MM/yyyy'),
+                            to_char(fechavcto,'dd/MM/yyyy'),
+                            nvl(Round((trunc(sysdate) - fechavcto),0),0),
+                            fechavcto, case when vlrapagar>0 then cupon end
+                    ) datos
+                    order by to_date(vencimiento,'dd/MM/yyyy') asc
+        ]]>
+    </query_telefono>
+
+
+</root>

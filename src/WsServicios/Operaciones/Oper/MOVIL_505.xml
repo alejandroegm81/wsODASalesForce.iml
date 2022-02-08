@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<root>
+    <query  ><![CDATA[
+      select
+                  row_number() over ( partition by customer_id order by customer_id, ohduedate desc) No,
+                  datos.customer_id, datos.co_id, datos.dn_num, datos.nombre, datos.identificacion, datos.tipo_cliente, datos.correo,
+                  sum(nvl(saldoNoVencido,0)+nvl(saldovencido,0)) over ( partition by customer_id order by customer_id) saldo_total,
+                  sum(saldoNoVencido) over ( partition by customer_id order by customer_id) saldo_novencido,
+                  sum(saldovencido) over ( partition by customer_id order by customer_id) saldo_vencido,
+                  count(*) over ( partition by customer_id order by customer_id) cantidad_documentos,
+                  datos.id2, datos.docid, datos.doc, datos.refe, datos.npe, datos.lectura, datos.factura, datos.emision, datos.vencimiento, datos.diasmora, datos.saldo, datos.saldovencido, datos.saldoNovencido, datos.ohduedate,ciclo
+                  from
+                  (
+                  select
+                      a.customer_id,
+                      e.co_id                 ,
+                      g.dn_num                ,
+                      case when  length(nvl(C.ccname,'x')) < length(nvl(C.ccfname,'x')) and length(nvl(C.ccname,'x')) > 1 then concat(concat(C.ccfname,' '),C.cclname) else nvl(C.ccname,concat(concat(C.ccfname,' '),C.cclname)) end nombre,
+                      c.passportno              Identificacion,
+                      nvl(b.prgname,'-') Tipo_Cliente,
+                      ccemail                 Correo,
+                      nvl(sum(case when ohopnamt_doc>0 then ohopnamt_doc end),0)                         Saldo_total,
+                      nvl(sum(case when ohduedate<trunc(sysdate) then ohopnamt_doc end),0)               Saldo_Vencido,
+                      nvl(count(*) -1 ,0)                                                                Cantidad_Documentos ,
+                      h.customer_id           id2,
+                      h.ohxact                docid,
+                      ''                      doc,
+                      h.ohrefnum              refe,
+                      ''                      npe,
+                      0                      Lectura,
+                      'FA'                    Factura,
+                      to_char(h.ohentdate,'dd/MM/yyyy')        Emision,
+                      to_char(h.ohduedate,'dd/MM/yyyy')        Vencimiento,
+                      nvl(Round((trunc(sysdate) - h.ohduedate),0),0)  diasMora,
+                      nvl(sum(case when ohopnamt_doc>0 then ohopnamt_doc end),0)  Saldo,
+                      nvl(sum(case when ohduedate>=trunc(sysdate) then ohopnamt_doc end ),0)SaldoNoVencido,
+                      nvl(sum(case when ohduedate<trunc(sysdate) then ohopnamt_doc end ),0)SaldoVencido,
+                      ohduedate, a.billcycle ciclo
+                  from Customer_all@bscs a
+                          inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+                          inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+                          left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+                          inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+                          inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+                          inner join directory_number@bscs g on g.dn_id       = f.dn_id
+                          left outer join orderhdr_all@bscs h on h.customer_id = a.customer_id  and h.ohstatus in ('FS','CS','IN', 'FE') and nvl(h.ohopnamt_doc,1)>0
+                  where
+                      {} /*g.dn_num='50378550122'*/
+                  group by
+                      a.customer_id          ,
+                      e.co_id                 ,
+                      g.dn_num                ,
+                      case when  length(nvl(C.ccname,'x')) < length(nvl(C.ccfname,'x')) and length(nvl(C.ccname,'x')) > 1 then concat(concat(C.ccfname,' '),C.cclname) else nvl(C.ccname,concat(concat(C.ccfname,' '),C.cclname)) end  ,
+                      c.passportno            ,
+                      nvl(b.prgname,'-')      ,
+                      ccemail                 ,
+                      h.customer_id           ,
+                      h.ohxact                ,
+                      ''                      ,
+                      h.ohrefnum              ,
+                      to_char(h.ohentdate,'dd/MM/yyyy')        ,
+                      to_char(h.ohduedate,'dd/MM/yyyy')        ,
+                      Round((trunc(sysdate) - h.ohduedate),0)  ,
+                      ohduedate, a.billcycle
+                   ) datos
+                   order by to_date(vencimiento,'dd/MM/yyyy') asc
+    ]]></query>
+</root>

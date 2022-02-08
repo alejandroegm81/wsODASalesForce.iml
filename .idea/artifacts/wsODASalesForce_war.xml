@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="war" build-on-make="true" name="wsODASalesForce:war">
+    <output-path>$PROJECT_DIR$/out/artifacts/wsODASalesForce_war</output-path>
+    <root id="archive" name="wsODAListenerRegional.war">
+      <element id="artifact" artifact-name="wsODASalesForce:war exploded" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="ApacheHttp" />
+          <element id="library" level="project" name="gson" />
+          <element id="library" level="project" name="javax.ws.rs-api-2.1.1" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

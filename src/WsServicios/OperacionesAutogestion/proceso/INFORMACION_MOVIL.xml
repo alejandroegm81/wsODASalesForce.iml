@@ -1,0 +1,441 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<root>
+    <query_hist_factura_502><![CDATA[
+        SELECT
+                a.customer_id                           codigo_cliente,
+                p.ccline1                               nombre_cliente,
+                b.passportno                            Identificacion,
+                h.des                                   PLAN,
+                to_char(a.co_expir_date,'dd/MM/yyyy HH24:mm:ss')   fecha_vencimiento,
+                to_char(a.co_signed,'dd/MM/yyyy HH24:mm:ss')       fecha_contrato,
+                to_char(b.csactivated,'dd/MM/yyyy HH24:mi') fecha_activacion_cliente,
+                g.ch_status                             estatus_coid, --EstadoDelPlan
+                0.0                                     PrecioPlan,
+                H.TMCODE                                CodigoPlan,
+                b.custcode                              custcode,
+                b.billcycle                             Ciclo,
+                --To_char (b.lbc_date - 1, 'yyyymm') ultimo_mes_facturado,
+                ----p.ccstreet                         calle,
+                --p.ccaddr1                          departamento,
+                --p.ccaddr2                          municipio,
+                --k.prgname                          tipo_cliente,
+                b.cslvlname                        clase,
+                -- b.costcenter_id,
+                a.co_id                            codigo_contrato,
+                --a.co_userlastmod                   usuario_modificacion_plan,
+                --c.dn_num                           telefono,
+                --c.dn_num                           telefono1,
+                i.rs_desc                          razon_estatus,
+                i.rs_id,
+                g.ch_seqno                         secuencia_historico,
+                g.ch_validfrom                     fecha_status,
+                g.userlastmod                      usuario_modificacion_estatus,
+                h.tmcode,
+                --Nvl (j.combo01, 'Sin Informacion') marca,
+                --Nvl (j.combo02, 'Sin Informacion') modelo,
+                --Nvl (j.combo03, 'Sin Informacion') garantia_telefono,
+                --a.co_equ_type                      imei,
+                --m.port_num                         imsi,
+                ---l.cd_sm_num                        sim,
+                --n.dealer_id                        codigo_dealer,
+                o.ccname                           dealer,
+                Decode (b.csemployer, '2', 'No Migrado','Migrado')   estado_cliente
+                FROM   contract_all@bscs a,       customer_all@bscs b,       contr_services_cap@bscs d,        directory_number@bscs c,
+                contract_history@bscs g,   mputmtab@bscs h,           reasonstatus_all@bscs i,          info_contr_combo@bscs j,
+                pricegroup_all@bscs k,     contr_devices@bscs l,      port@bscs m,                      storage_medium@bscs n,
+                ccontact_all@bscs o,       ccontact_all@bscs p
+                WHERE  a.co_id = d.co_id
+                AND d.dn_id = c.dn_id
+                AND d.dn_id IS NOT NULL
+                AND d.seqno = (SELECT Max (seqno) FROM   contr_services_cap@bscs z WHERE  a.co_id = z.co_id)
+                AND a.co_id = g.co_id
+                AND a.co_id = l.co_id
+                AND l.cd_seqno = (SELECT Max (z.cd_seqno) FROM   contr_devices@bscs z WHERE  z.co_id = l.co_id)
+                AND l.port_id = m.port_id
+                AND m.sm_id = n.sm_id(+)
+                AND n.dealer_id = o.customer_id(+)
+                AND a.customer_id = p.customer_id
+                AND p.ccbill = 'X'
+                AND p.ccseq = (SELECT Max (v.ccseq) FROM   ccontact_all@bscs v WHERE  v.customer_id = p.customer_id AND v.ccbill = 'X')
+                AND g.ch_seqno = (SELECT Max (y.ch_seqno) FROM   contract_history@bscs y WHERE  g.co_id = y.co_id AND y.ch_pending IS NULL)
+                AND a.tmcode = h.tmcode
+                AND h.status = 'P'
+                AND h.vscode = (SELECT Max (x.vscode) FROM   mputmtab@bscs x  WHERE  h.tmcode = x.tmcode)
+                AND g.ch_reason = i.rs_id
+                AND a.co_id = j.co_id(+)
+                AND a.customer_id = b.customer_id
+                AND b.prgcode = k.prgcode
+                and g.ch_status in ('a','s')
+                and {} /*AND c.dn_num = '50247704696'*/
+    ]]>
+    </query_hist_factura_502>
+
+
+    <query_hist_factura_503><![CDATA[
+        SELECT
+                a.customer_id                           codigo_cliente,
+                p.ccline1                               nombre_cliente,
+                b.passportno                            Identificacion,
+                h.des                                   PLAN,
+                to_char(a.co_expir_date,'dd/MM/yyyy HH24:mm:ss')   fecha_vencimiento,
+                to_char(a.co_signed,'dd/MM/yyyy HH24:mm:ss')       fecha_contrato,
+                to_char(b.csactivated,'dd/MM/yyyy HH24:mi') fecha_activacion_cliente,
+                g.ch_status                             estatus_coid, --EstadoDelPlan
+                0.0                                     PrecioPlan,
+                H.TMCODE                                CodigoPlan,
+                b.custcode                              custcode,
+                b.billcycle                             Ciclo,
+                --To_char (b.lbc_date - 1, 'yyyymm') ultimo_mes_facturado,
+                ----p.ccstreet                         calle,
+                --p.ccaddr1                          departamento,
+                --p.ccaddr2                          municipio,
+                --k.prgname                          tipo_cliente,
+                b.cslvlname                        clase,
+                -- b.costcenter_id,
+                a.co_id                            codigo_contrato,
+                --a.co_userlastmod                   usuario_modificacion_plan,
+                --c.dn_num                           telefono,
+                --c.dn_num                           telefono1,
+                i.rs_desc                          razon_estatus,
+                i.rs_id,
+                g.ch_seqno                         secuencia_historico,
+                g.ch_validfrom                     fecha_status,
+                g.userlastmod                      usuario_modificacion_estatus,
+                h.tmcode,
+                --Nvl (j.combo01, 'Sin Informacion') marca,
+                --Nvl (j.combo02, 'Sin Informacion') modelo,
+                --Nvl (j.combo03, 'Sin Informacion') garantia_telefono,
+                --a.co_equ_type                      imei,
+                --m.port_num                         imsi,
+                ---l.cd_sm_num                        sim,
+                --n.dealer_id                        codigo_dealer,
+                o.ccname                           dealer,
+                Decode (b.csemployer, '2', 'No Migrado','Migrado')   estado_cliente
+                FROM   contract_all a,       customer_all b,       contr_services_cap d,        directory_number c,
+                contract_history g,   mputmtab h,           reasonstatus_all i,          info_contr_combo j,
+                pricegroup_all k,     contr_devices l,      port m,                      storage_medium n,
+                ccontact_all o,       ccontact_all p
+                WHERE  a.co_id = d.co_id
+                AND d.dn_id = c.dn_id
+                AND d.dn_id IS NOT NULL
+                AND d.seqno = (SELECT Max (seqno) FROM   contr_services_cap z WHERE  a.co_id = z.co_id)
+                AND a.co_id = g.co_id
+                AND a.co_id = l.co_id
+                AND l.cd_seqno = (SELECT Max (z.cd_seqno) FROM   contr_devices z WHERE  z.co_id = l.co_id)
+                AND l.port_id = m.port_id
+                AND m.sm_id = n.sm_id(+)
+                AND n.dealer_id = o.customer_id(+)
+                AND a.customer_id = p.customer_id
+                AND p.ccbill = 'X'
+                AND p.ccseq = (SELECT Max (v.ccseq) FROM   ccontact_all v WHERE  v.customer_id = p.customer_id AND v.ccbill = 'X')
+                AND g.ch_seqno = (SELECT Max (y.ch_seqno) FROM   contract_history y WHERE  g.co_id = y.co_id AND y.ch_pending IS NULL)
+                AND a.tmcode = h.tmcode
+                AND h.status = 'P'
+                AND h.vscode = (SELECT Max (x.vscode) FROM   mputmtab x  WHERE  h.tmcode = x.tmcode)
+                AND g.ch_reason = i.rs_id
+                AND a.co_id = j.co_id(+)
+                AND a.customer_id = b.customer_id
+                AND b.prgcode = k.prgcode
+                and g.ch_status in ('a','s')
+                and {} /*AND c.dn_num = '50247704696'*/
+    ]]>
+    </query_hist_factura_503>
+
+
+    <query_hist_factura_504><![CDATA[
+        SELECT
+                a.customer_id                           codigo_cliente,
+                p.ccline1                               nombre_cliente,
+                b.passportno                            Identificacion,
+                h.des                                   PLAN,
+                to_char(a.co_expir_date,'dd/MM/yyyy HH24:mm:ss')   fecha_vencimiento,
+                to_char(a.co_signed,'dd/MM/yyyy HH24:mm:ss')       fecha_contrato,
+                to_char(b.csactivated,'dd/MM/yyyy HH24:mi') fecha_activacion_cliente,
+                g.ch_status                             estatus_coid, --EstadoDelPlan
+                0.0                                     PrecioPlan,
+                H.TMCODE                                CodigoPlan,
+                b.custcode                              custcode,
+                b.billcycle                             Ciclo,
+                --To_char (b.lbc_date - 1, 'yyyymm') ultimo_mes_facturado,
+                ----p.ccstreet                         calle,
+                --p.ccaddr1                          departamento,
+                --p.ccaddr2                          municipio,
+                --k.prgname                          tipo_cliente,
+                b.cslvlname                        clase,
+                -- b.costcenter_id,
+                a.co_id                            codigo_contrato,
+                --a.co_userlastmod                   usuario_modificacion_plan,
+                --c.dn_num                           telefono,
+                --c.dn_num                           telefono1,
+                i.rs_desc                          razon_estatus,
+                i.rs_id,
+                g.ch_seqno                         secuencia_historico,
+                g.ch_validfrom                     fecha_status,
+                g.userlastmod                      usuario_modificacion_estatus,
+                h.tmcode,
+                --Nvl (j.combo01, 'Sin Informacion') marca,
+                --Nvl (j.combo02, 'Sin Informacion') modelo,
+                --Nvl (j.combo03, 'Sin Informacion') garantia_telefono,
+                --a.co_equ_type                      imei,
+                --m.port_num                         imsi,
+                ---l.cd_sm_num                        sim,
+                --n.dealer_id                        codigo_dealer,
+                o.ccname                           dealer,
+                Decode (b.csemployer, '2', 'No Migrado','Migrado')   estado_cliente
+                FROM   contract_all a,       customer_all b,       contr_services_cap d,        directory_number c,
+                contract_history g,   mputmtab h,           reasonstatus_all i,          info_contr_combo j,
+                pricegroup_all k,     contr_devices l,      port m,                      storage_medium n,
+                ccontact_all o,       ccontact_all p
+                WHERE  a.co_id = d.co_id
+                AND d.dn_id = c.dn_id
+                AND d.dn_id IS NOT NULL
+                AND d.seqno = (SELECT Max (seqno) FROM   contr_services_cap z WHERE  a.co_id = z.co_id)
+                AND a.co_id = g.co_id
+                AND a.co_id = l.co_id
+                AND l.cd_seqno = (SELECT Max (z.cd_seqno) FROM   contr_devices z WHERE  z.co_id = l.co_id)
+                AND l.port_id = m.port_id
+                AND m.sm_id = n.sm_id(+)
+                AND n.dealer_id = o.customer_id(+)
+                AND a.customer_id = p.customer_id
+                AND p.ccbill = 'X'
+                AND p.ccseq = (SELECT Max (v.ccseq) FROM   ccontact_all v WHERE  v.customer_id = p.customer_id AND v.ccbill = 'X')
+                AND g.ch_seqno = (SELECT Max (y.ch_seqno) FROM   contract_history y WHERE  g.co_id = y.co_id AND y.ch_pending IS NULL)
+                AND a.tmcode = h.tmcode
+                AND h.status = 'P'
+                AND h.vscode = (SELECT Max (x.vscode) FROM   mputmtab x  WHERE  h.tmcode = x.tmcode)
+                AND g.ch_reason = i.rs_id
+                AND a.co_id = j.co_id(+)
+                AND a.customer_id = b.customer_id
+                AND b.prgcode = k.prgcode
+                and g.ch_status in ('a','s')
+                and {} /*AND c.dn_num = '50247704696'*/
+    ]]>
+    </query_hist_factura_504>
+
+
+
+    <query_hist_factura_505><![CDATA[
+        SELECT
+                a.customer_id                           codigo_cliente,
+                p.ccline1                               nombre_cliente,
+                b.passportno                            Identificacion,
+                h.des                                   PLAN,
+                to_char(a.co_expir_date,'dd/MM/yyyy HH24:mm:ss')   fecha_vencimiento,
+                to_char(a.co_signed,'dd/MM/yyyy HH24:mm:ss')       fecha_contrato,
+                to_char(b.csactivated,'dd/MM/yyyy HH24:mi') fecha_activacion_cliente,
+                g.ch_status                             estatus_coid, --EstadoDelPlan
+                0.0                                     PrecioPlan,
+                H.TMCODE                                CodigoPlan,
+                b.custcode                              custcode,
+                b.billcycle                             Ciclo,
+                --To_char (b.lbc_date - 1, 'yyyymm') ultimo_mes_facturado,
+                ----p.ccstreet                         calle,
+                --p.ccaddr1                          departamento,
+                --p.ccaddr2                          municipio,
+                --k.prgname                          tipo_cliente,
+                b.cslvlname                        clase,
+                -- b.costcenter_id,
+                a.co_id                            codigo_contrato,
+                --a.co_userlastmod                   usuario_modificacion_plan,
+                --c.dn_num                           telefono,
+                --c.dn_num                           telefono1,
+                i.rs_desc                          razon_estatus,
+                i.rs_id,
+                g.ch_seqno                         secuencia_historico,
+                g.ch_validfrom                     fecha_status,
+                g.userlastmod                      usuario_modificacion_estatus,
+                h.tmcode,
+                --Nvl (j.combo01, 'Sin Informacion') marca,
+                --Nvl (j.combo02, 'Sin Informacion') modelo,
+                --Nvl (j.combo03, 'Sin Informacion') garantia_telefono,
+                --a.co_equ_type                      imei,
+                --m.port_num                         imsi,
+                ---l.cd_sm_num                        sim,
+                --n.dealer_id                        codigo_dealer,
+                o.ccname                           dealer,
+                Decode (b.csemployer, '2', 'No Migrado','Migrado')   estado_cliente
+                FROM   contract_all a,       customer_all b,       contr_services_cap d,        directory_number c,
+                contract_history g,   mputmtab h,           reasonstatus_all i,          info_contr_combo j,
+                pricegroup_all k,     contr_devices l,      port m,                      storage_medium n,
+                ccontact_all o,       ccontact_all p
+                WHERE  a.co_id = d.co_id
+                AND d.dn_id = c.dn_id
+                AND d.dn_id IS NOT NULL
+                AND d.seqno = (SELECT Max (seqno) FROM   contr_services_cap z WHERE  a.co_id = z.co_id)
+                AND a.co_id = g.co_id
+                AND a.co_id = l.co_id
+                AND l.cd_seqno = (SELECT Max (z.cd_seqno) FROM   contr_devices z WHERE  z.co_id = l.co_id)
+                AND l.port_id = m.port_id
+                AND m.sm_id = n.sm_id(+)
+                AND n.dealer_id = o.customer_id(+)
+                AND a.customer_id = p.customer_id
+                AND p.ccbill = 'X'
+                AND p.ccseq = (SELECT Max (v.ccseq) FROM   ccontact_all v WHERE  v.customer_id = p.customer_id AND v.ccbill = 'X')
+                AND g.ch_seqno = (SELECT Max (y.ch_seqno) FROM   contract_history y WHERE  g.co_id = y.co_id AND y.ch_pending IS NULL)
+                AND a.tmcode = h.tmcode
+                AND h.status = 'P'
+                AND h.vscode = (SELECT Max (x.vscode) FROM   mputmtab x  WHERE  h.tmcode = x.tmcode)
+                AND g.ch_reason = i.rs_id
+                AND a.co_id = j.co_id(+)
+                AND a.customer_id = b.customer_id
+                AND b.prgcode = k.prgcode
+                and g.ch_status in ('a','s')
+                and {} /*AND c.dn_num = '50247704696'*/
+    ]]>
+    </query_hist_factura_505>
+
+
+
+    <query_hist_factura_506><![CDATA[
+        SELECT
+                a.customer_id                           codigo_cliente,
+                p.ccline1                               nombre_cliente,
+                b.passportno                            Identificacion,
+                h.des                                   PLAN,
+                to_char(a.co_expir_date,'dd/MM/yyyy HH24:mm:ss')   fecha_vencimiento,
+                to_char(a.co_signed,'dd/MM/yyyy HH24:mm:ss')       fecha_contrato,
+                to_char(b.csactivated,'dd/MM/yyyy HH24:mi') fecha_activacion_cliente,
+                g.ch_status                             estatus_coid, --EstadoDelPlan
+                0.0                                     PrecioPlan,
+                H.TMCODE                                CodigoPlan,
+                b.custcode                              custcode,
+                b.billcycle                             Ciclo,
+                --To_char (b.lbc_date - 1, 'yyyymm') ultimo_mes_facturado,
+                ----p.ccstreet                         calle,
+                --p.ccaddr1                          departamento,
+                --p.ccaddr2                          municipio,
+                --k.prgname                          tipo_cliente,
+                b.cslvlname                        clase,
+                -- b.costcenter_id,
+                a.co_id                            codigo_contrato,
+                --a.co_userlastmod                   usuario_modificacion_plan,
+                --c.dn_num                           telefono,
+                --c.dn_num                           telefono1,
+                i.rs_desc                          razon_estatus,
+                i.rs_id,
+                g.ch_seqno                         secuencia_historico,
+                g.ch_validfrom                     fecha_status,
+                g.userlastmod                      usuario_modificacion_estatus,
+                h.tmcode,
+                --Nvl (j.combo01, 'Sin Informacion') marca,
+                --Nvl (j.combo02, 'Sin Informacion') modelo,
+                --Nvl (j.combo03, 'Sin Informacion') garantia_telefono,
+                --a.co_equ_type                      imei,
+                --m.port_num                         imsi,
+                ---l.cd_sm_num                        sim,
+                --n.dealer_id                        codigo_dealer,
+                o.ccname                           dealer,
+                Decode (b.csemployer, '2', 'No Migrado','Migrado')   estado_cliente
+                FROM   contract_all a,       customer_all b,       contr_services_cap d,        directory_number c,
+                contract_history g,   mputmtab h,           reasonstatus_all i,          info_contr_combo j,
+                pricegroup_all k,     contr_devices l,      port m,                      storage_medium n,
+                ccontact_all o,       ccontact_all p
+                WHERE  a.co_id = d.co_id
+                AND d.dn_id = c.dn_id
+                AND d.dn_id IS NOT NULL
+                AND d.seqno = (SELECT Max (seqno) FROM   contr_services_cap z WHERE  a.co_id = z.co_id)
+                AND a.co_id = g.co_id
+                AND a.co_id = l.co_id
+                AND l.cd_seqno = (SELECT Max (z.cd_seqno) FROM   contr_devices z WHERE  z.co_id = l.co_id)
+                AND l.port_id = m.port_id
+                AND m.sm_id = n.sm_id(+)
+                AND n.dealer_id = o.customer_id(+)
+                AND a.customer_id = p.customer_id
+                AND p.ccbill = 'X'
+                AND p.ccseq = (SELECT Max (v.ccseq) FROM   ccontact_all v WHERE  v.customer_id = p.customer_id AND v.ccbill = 'X')
+                AND g.ch_seqno = (SELECT Max (y.ch_seqno) FROM   contract_history y WHERE  g.co_id = y.co_id AND y.ch_pending IS NULL)
+                AND a.tmcode = h.tmcode
+                AND h.status = 'P'
+                AND h.vscode = (SELECT Max (x.vscode) FROM   mputmtab x  WHERE  h.tmcode = x.tmcode)
+                AND g.ch_reason = i.rs_id
+                AND a.co_id = j.co_id(+)
+                AND a.customer_id = b.customer_id
+                AND b.prgcode = k.prgcode
+                and g.ch_status in ('a','s')
+                and {} /*AND c.dn_num = '50247704696'*/
+    ]]>
+    </query_hist_factura_506>
+
+
+    <query_hist_factura_addon_50_>
+        SELECT
+            TO_CHAR(CA.CO_ACTIVATED,'DD/MM/YYYY HH24:mm:ss') FechaActivacion,
+            TO_CHAR(CA.CO_INSTALLED,'DD/MM/YYYY HH24:mm:ss') FechaRenovacion,
+            DECODE(PR.STATUS,'A','ACTIVO','S','SUSPENDIDO','D','DESACTIVO','O','EN ESPERA','ESTADO DESCONOCIDO') Estado,
+            SP.DES NombreAlterno,
+            SN.DES Nombre,
+            MP.ACCESSFEE Precio,
+            DN.DN_NUM NumeroServicioAsociado, CA.customer_id Codigo_Cliente
+        FROM      DIRECTORY_NUMBER@bscs DN
+            inner join CONTR_SERVICES_CAP@bscs CSC ON CSC.DN_ID=DN.DN_ID AND CSC.CS_DEACTIV_DATE IS NULL AND CSC.CS_ACTIV_DATE IS NOT NULL
+            inner join CONTRACT_ALL@bscs CA ON CA.CO_ID=CSC.CO_ID
+            inner join PROFILE_SERVICE@bscs PS ON PS.CO_ID=CA.CO_ID
+            inner join PR_SERV_STATUS_HIST@bscs PR ON PR.CO_ID=CA.CO_ID AND PR.HISTNO=PS.STATUS_HISTNO AND PR.STATUS='A'
+            inner join PR_SERV_SPCODE_HIST@bscs PSP ON PSP.CO_ID=CA.CO_ID AND PSP.HISTNO=PS.SPCODE_HISTNO
+            inner join CURR_MPULKTMB@bscs MP ON MP.TMCODE=CA.TMCODE AND MP.SNCODE=PS.SNCODE AND MP.SPCODE=PSP.SPCODE AND MP.ACCESSFEE>0
+            inner join RATEPLAN@bscs RP ON RP.TMCODE=CA.TMCODE
+            inner join MPUSPTAB@bscs SP ON SP.SPCODE=PSP.SPCODE
+            inner join MPUSNTAB@bscs SN ON SN.SNCODE=PR.SNCODE
+        WHERE  {} /*DN.DN_NUM='50247704696'*/
+        ORDER BY PSP.SPCODE,PR.SNCODE
+    </query_hist_factura_addon_50_>
+    <query_hist_factura_addon_507>
+        SELECT
+        TO_CHAR(CA.CO_ACTIVATED,'DD/MM/YYYY HH24:mm:ss') FechaActivacion,
+        TO_CHAR(CA.CO_INSTALLED,'DD/MM/YYYY HH24:mm:ss') FechaRenovacion,
+        DECODE(PR.STATUS,'A','ACTIVO','S','SUSPENDIDO','D','DESACTIVO','O','EN ESPERA','ESTADO DESCONOCIDO') Estado,
+        SP.DES NombreAlterno,
+        SN.DES Nombre,
+        MP.ACCESSFEE Precio,
+        DN.DN_NUM NumeroServicioAsociado, CA.customer_id Codigo_Cliente
+        FROM      DIRECTORY_NUMBER@bscs DN
+        inner join CONTR_SERVICES_CAP@bscs CSC ON CSC.DN_ID=DN.DN_ID AND CSC.CS_DEACTIV_DATE IS NULL AND CSC.CS_ACTIV_DATE IS NOT NULL
+        inner join CONTRACT_ALL@bscs CA ON CA.CO_ID=CSC.CO_ID
+        inner join PROFILE_SERVICE@bscs PS ON PS.CO_ID=CA.CO_ID
+        inner join PR_SERV_STATUS_HIST@bscs PR ON PR.CO_ID=CA.CO_ID AND PR.HISTNO=PS.STATUS_HISTNO AND PR.STATUS='A'
+        inner join PR_SERV_SPCODE_HIST@bscs PSP ON PSP.CO_ID=CA.CO_ID AND PSP.HISTNO=PS.SPCODE_HISTNO
+        inner join CURR_MPULKTMB@bscs MP ON MP.TMCODE=CA.TMCODE AND MP.SNCODE=PS.SNCODE AND MP.SPCODE=PSP.SPCODE AND MP.ACCESSFEE>0
+        inner join RATEPLAN@bscs RP ON RP.TMCODE=CA.TMCODE
+        inner join MPUSPTAB@bscs SP ON SP.SPCODE=PSP.SPCODE
+        inner join MPUSNTAB@bscs SN ON SN.SNCODE=PR.SNCODE
+        WHERE  {} /*DN.DN_NUM='50247704696'*/
+        ORDER BY PSP.SPCODE,PR.SNCODE
+    </query_hist_factura_addon_507>
+
+
+    <query_hist_factura_velocidad_50_>
+        SELECT
+            sp2.co_id contract_id,
+            sp2.sncode sn_code,
+            sp2.spcode sp_code,
+            sp2.profile_id,
+            coa.tmcode,
+            coa.customer_id, coa.plcode ,
+            pkg_pcrf_regional.get_value_param_key@bscs (
+                                                    coa.plcode, --1001, --p_plcode                INTEGER,
+                                                    coa.tmcode, --6684, --p_tmcode             IN INTEGER,
+                                                    sp2.sncode, -- 1193, --p_sncode             IN INTEGER,
+                                                    sp2.spcode , --1314, --p_predecessorvalue   IN VARCHAR2,
+                                                    10118) Velocidad   --p_parameter_id          INTEGER)
+        FROM pr_serv_spcode_hist@bscs sp2,
+            profile_service@bscs ps2,
+            pr_serv_status_hist@bscs st2,
+            contract_all@bscs coa,
+            customer_all@bscs cua , contr_services_cap@bscs d,        directory_number@bscs c
+        WHERE     st2.co_id = coa.co_id
+            AND coa.customer_id = cua.customer_id AND st2.sncode IN (SELECT sncode FROM tbl_services_pcrf@bscs WHERE cost_center = 2 AND enabled = 1)
+            AND UPPER (st2.status) IN ('A', 'O')
+            AND ps2.co_id = st2.co_id
+            AND ps2.sncode = st2.sncode
+            AND ps2.status_histno = st2.histno
+            AND ps2.co_id = sp2.co_id
+            AND ps2.sncode = sp2.sncode
+            AND ps2.spcode_histno = sp2.histno
+            --and coa.co_id=6497242
+            and c.dn_id = d.dn_id and d.co_id = coa.co_id
+            --AND c.dn_num = '50247704696'
+            and {}
+    </query_hist_factura_velocidad_50_>
+
+
+</root>

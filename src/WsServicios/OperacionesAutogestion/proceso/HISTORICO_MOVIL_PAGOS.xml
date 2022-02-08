@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<root>
+    <query_hist_factura_502><![CDATA[
+        select
+        case when CAUSERNAME like '%PISA%' then 'PISA' when CAUSERNAME like '%ODA%' then 'ODA' when CAUSERNAME like '%UCH%' then 'Ajuste'  when CAUSERNAME like '%PFH%' then 'Ajuste' else 'Ejecutivo' end Usuario,
+        to_char( caentdate, 'dd/MM/yyyy HH24:mm:ss') FechaPago,
+        ohrefnum Factura,
+        cachkamt_pay Pago,
+        to_char(ohduedate,'dd/MM/yyyy HH24:mm:ss') FechaVencimiento , cachknum CorrelativoPagoODA
+        --a.caxact, a.customer_id, a.caentdate, carecdate, CAUSERNAME, cachknum CorrelativoPagoODA, carem,  cachkamt_pay Pago, b.cadxact, b.cadamt_doc , c.ohxact, c.ohstatus, c.ohentdate, c.ohduedate, c.ohrefnum, c.ohtrucker, c.ohinvamt_gl, c.ohopnamt_doc
+        from CASHRECEIPTS_ALL@BSCS a
+        inner join CASHDETAIL@BSCS b on a.caxact = b.cadxact
+        inner join  orderhdr_all@BSCS c on c.customer_id = a.customer_id and C.ohxact = b.cadoxact
+        inner join (
+            select distinct
+            decode(a.paymntresp,'X', a.customer_id ,   decode(  nvl(a.customer_id_high,-1), -1, a.customer_id , a.customer_id_high  )   )  CodCliente,
+            concat(concat(c.ccname || ' ',c.ccfname || ' '),c.cclname)        razon_social--,                          --DN_NUM   Telefono
+            from Customer_all@bscs a
+            inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+            inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+            left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+            inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+            inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+            inner join directory_number@bscs g on g.dn_id       = f.dn_id
+            where
+                 {}  /*dn_num like '50247705765'*/
+        ) DATA on  a.customer_id=DATA.CodCliente
+        where a.customer_id=DATA.CodCliente and cachknum is not null
+        order by a.caxact desc
+        ]]>
+    </query_hist_factura_502>
+
+    <query_hist_factura_503><![CDATA[
+        select
+        case when CAUSERNAME like '%PISA%' then 'PISA' when CAUSERNAME like '%ODA%' then 'ODA' when CAUSERNAME like '%UCH%' then 'Ajuste'  when CAUSERNAME like '%PFH%' then 'Ajuste' else 'Ejecutivo' end Usuario,
+        to_char( caentdate, 'dd/MM/yyyy HH24:mm:ss') FechaPago,
+        ohrefnum Factura,
+        cachkamt_pay Pago,
+        to_char(ohduedate,'dd/MM/yyyy HH24:mm:ss') FechaVencimiento, cachknum CorrelativoPagoODA
+        --a.caxact, a.customer_id, a.caentdate, carecdate, CAUSERNAME, cachknum CorrelativoPagoODA, carem,  cachkamt_pay Pago, b.cadxact, b.cadamt_doc , c.ohxact, c.ohstatus, c.ohentdate, c.ohduedate, c.ohrefnum, c.ohtrucker, c.ohinvamt_gl, c.ohopnamt_doc
+        from CASHRECEIPTS_ALL@BSCS a
+        inner join CASHDETAIL@BSCS b on a.caxact = b.cadxact
+        inner join  orderhdr_all@BSCS c on c.customer_id = a.customer_id and C.ohxact = b.cadoxact
+        inner join (
+            select distinct
+            decode(a.paymntresp,'X', a.customer_id ,   decode(  nvl(a.customer_id_high,-1), -1, a.customer_id , a.customer_id_high  )   )  CodCliente,
+            concat(concat(c.ccname || ' ',c.ccfname || ' '),c.cclname)        razon_social--,                          --DN_NUM   Telefono
+            from Customer_all@bscs a
+            inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+            inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+            left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+            inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+            inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+            inner join directory_number@bscs g on g.dn_id       = f.dn_id
+            where
+                 {}  /*dn_num like '50247705765'*/
+        ) DATA on  a.customer_id=DATA.CodCliente
+        where a.customer_id=DATA.CodCliente and cachknum is not null
+        order by a.caxact desc
+        ]]>
+    </query_hist_factura_503>
+
+    <query_hist_factura_504><![CDATA[
+        select
+        case when CAUSERNAME like '%PISA%' then 'PISA' when CAUSERNAME like '%ODA%' then 'ODA' when CAUSERNAME like '%UCH%' then 'Ajuste'  when CAUSERNAME like '%PFH%' then 'Ajuste' else 'Ejecutivo' end Usuario,
+        to_char( caentdate, 'dd/MM/yyyy HH24:mm:ss') FechaPago,
+        ohrefnum Factura,
+        cachkamt_pay Pago,
+        to_char(ohduedate,'dd/MM/yyyy HH24:mm:ss') FechaVencimiento, cachknum CorrelativoPagoODA
+        --a.caxact, a.customer_id, a.caentdate, carecdate, CAUSERNAME, cachknum CorrelativoPagoODA, carem,  cachkamt_pay Pago, b.cadxact, b.cadamt_doc , c.ohxact, c.ohstatus, c.ohentdate, c.ohduedate, c.ohrefnum, c.ohtrucker, c.ohinvamt_gl, c.ohopnamt_doc
+        from CASHRECEIPTS_ALL@BSCS a
+        inner join CASHDETAIL@BSCS b on a.caxact = b.cadxact
+        inner join  orderhdr_all@BSCS c on c.customer_id = a.customer_id and C.ohxact = b.cadoxact
+        inner join (
+            select distinct
+            decode(a.paymntresp,'X', a.customer_id ,   decode(  nvl(a.customer_id_high,-1), -1, a.customer_id , a.customer_id_high  )   )  CodCliente,
+            concat(concat(c.ccname || ' ',c.ccfname || ' '),c.cclname)        razon_social--,                          --DN_NUM   Telefono
+            from Customer_all@bscs a
+            inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+            inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+            left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+            inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+            inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+            inner join directory_number@bscs g on g.dn_id       = f.dn_id
+            where
+                 {}  /*dn_num like '50247705765'*/
+        ) DATA on  a.customer_id=DATA.CodCliente
+        where a.customer_id=DATA.CodCliente and cachknum is not null
+        order by a.caxact desc
+        ]]>
+    </query_hist_factura_504>
+
+    <query_hist_factura_505><![CDATA[
+        select
+        case when CAUSERNAME like '%PISA%' then 'PISA' when CAUSERNAME like '%ODA%' then 'ODA' when CAUSERNAME like '%UCH%' then 'Ajuste'  when CAUSERNAME like '%PFH%' then 'Ajuste' else 'Ejecutivo' end Usuario,
+        to_char( caentdate, 'dd/MM/yyyy HH24:mm:ss') FechaPago,
+        ohrefnum Factura,
+        cachkamt_pay Pago,
+        to_char(ohduedate,'dd/MM/yyyy HH24:mm:ss') FechaVencimiento, cachknum CorrelativoPagoODA
+        --a.caxact, a.customer_id, a.caentdate, carecdate, CAUSERNAME, cachknum CorrelativoPagoODA, carem,  cachkamt_pay Pago, b.cadxact, b.cadamt_doc , c.ohxact, c.ohstatus, c.ohentdate, c.ohduedate, c.ohrefnum, c.ohtrucker, c.ohinvamt_gl, c.ohopnamt_doc
+        from CASHRECEIPTS_ALL@BSCS a
+        inner join CASHDETAIL@BSCS b on a.caxact = b.cadxact
+        inner join  orderhdr_all@BSCS c on c.customer_id = a.customer_id and C.ohxact = b.cadoxact
+        inner join (
+            select distinct
+            decode(a.paymntresp,'X', a.customer_id ,   decode(  nvl(a.customer_id_high,-1), -1, a.customer_id , a.customer_id_high  )   )  CodCliente,
+            concat(concat(c.ccname || ' ',c.ccfname || ' '),c.cclname)        razon_social--,                          --DN_NUM   Telefono
+            from Customer_all@bscs a
+            inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+            inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+            left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+            inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+            inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+            inner join directory_number@bscs g on g.dn_id       = f.dn_id
+            where
+                 {}  /*dn_num like '50247705765'*/
+        ) DATA on  a.customer_id=DATA.CodCliente
+        where a.customer_id=DATA.CodCliente and cachknum is not null
+        order by a.caxact desc
+        ]]>
+    </query_hist_factura_505>
+
+    <query_hist_factura_506><![CDATA[
+        select
+        case when CAUSERNAME like '%PISA%' then 'PISA' when CAUSERNAME like '%ODA%' then 'ODA' when CAUSERNAME like '%UCH%' then 'Ajuste'  when CAUSERNAME like '%PFH%' then 'Ajuste' else 'Ejecutivo' end Usuario,
+        to_char( caentdate, 'dd/MM/yyyy HH24:mm:ss') FechaPago,
+        ohrefnum Factura,
+        cachkamt_pay Pago,
+        to_char(ohduedate,'dd/MM/yyyy HH24:mm:ss') FechaVencimiento, cachknum CorrelativoPagoODA
+        --a.caxact, a.customer_id, a.caentdate, carecdate, CAUSERNAME, cachknum CorrelativoPagoODA, carem,  cachkamt_pay Pago, b.cadxact, b.cadamt_doc , c.ohxact, c.ohstatus, c.ohentdate, c.ohduedate, c.ohrefnum, c.ohtrucker, c.ohinvamt_gl, c.ohopnamt_doc
+        from CASHRECEIPTS_ALL@BSCS a
+        inner join CASHDETAIL@BSCS b on a.caxact = b.cadxact
+        inner join  orderhdr_all@BSCS c on c.customer_id = a.customer_id and C.ohxact = b.cadoxact
+        inner join (
+            select distinct
+            decode(a.paymntresp,'X', a.customer_id ,   decode(  nvl(a.customer_id_high,-1), -1, a.customer_id , a.customer_id_high  )   )  CodCliente,
+            concat(concat(c.ccname || ' ',c.ccfname || ' '),c.cclname)        razon_social--,                          --DN_NUM   Telefono
+            from Customer_all@bscs a
+            inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+            inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+            left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+            inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+            inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+            inner join directory_number@bscs g on g.dn_id       = f.dn_id
+            where
+                 {}  /*dn_num like '50247705765'*/
+        ) DATA on  a.customer_id=DATA.CodCliente
+        where a.customer_id=DATA.CodCliente and cachknum is not null
+        order by a.caxact desc
+        ]]>
+    </query_hist_factura_506>
+
+    <query_hist_factura_507><![CDATA[
+        select
+        case when CAUSERNAME like '%PISA%' then 'PISA' when CAUSERNAME like '%ODA%' then 'ODA' when CAUSERNAME like '%UCH%' then 'Ajuste'  when CAUSERNAME like '%PFH%' then 'Ajuste' else 'Ejecutivo' end Usuario,
+        to_char( caentdate, 'dd/MM/yyyy HH24:mm:ss') FechaPago,
+        ohrefnum Factura,
+        cachkamt_pay Pago,
+        to_char(ohduedate,'dd/MM/yyyy HH24:mm:ss') FechaVencimiento, cachknum CorrelativoPagoODA
+        --a.caxact, a.customer_id, a.caentdate, carecdate, CAUSERNAME, cachknum CorrelativoPagoODA, carem,  cachkamt_pay Pago, b.cadxact, b.cadamt_doc , c.ohxact, c.ohstatus, c.ohentdate, c.ohduedate, c.ohrefnum, c.ohtrucker, c.ohinvamt_gl, c.ohopnamt_doc
+        from CASHRECEIPTS_ALL@BSCS a
+        inner join CASHDETAIL@BSCS b on a.caxact = b.cadxact
+        inner join  orderhdr_all@BSCS c on c.customer_id = a.customer_id and C.ohxact = b.cadoxact
+        inner join (
+            select distinct
+            decode(a.paymntresp,'X', a.customer_id ,   decode(  nvl(a.customer_id_high,-1), -1, a.customer_id , a.customer_id_high  )   )  CodCliente,
+            concat(concat(c.ccname || ' ',c.ccfname || ' '),c.cclname)        razon_social--,                          --DN_NUM   Telefono
+            from Customer_all@bscs a
+            inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+            inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+            left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+            inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+            inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+            inner join directory_number@bscs g on g.dn_id       = f.dn_id
+            where
+                 {}  /*dn_num like '50247705765'*/
+        ) DATA on  a.customer_id=DATA.CodCliente
+        where a.customer_id=DATA.CodCliente and cachknum is not null
+        order by a.caxact desc
+        ]]>
+    </query_hist_factura_507>
+
+
+</root>

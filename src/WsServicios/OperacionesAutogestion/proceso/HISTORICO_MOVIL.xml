@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<root>
+    <query_hist_factura_502><![CDATA[
+      select
+          decode(a.paymntresp,'X', a.customer_id ,   decode(  nvl(a.customer_id_high,-1), -1, a.customer_id , a.customer_id_high  )   )  CodCliente,
+          /*e.co_id                 , g.dn_num                ,*/
+          concat(concat(c.ccname || ' ',c.ccfname || ' '),c.cclname)        razon_social,
+          round(ohopnamt_doc,2)                                             Saldo,
+          round(ohinvamt_gl,2)                                              MontoFacturado,
+          to_char( ohentdate ,'yyyy' )                                      yFacturacion,
+          to_char( ohduedate ,'dd/MM/yyyy HH24:mm:ss' )                                FechaVencimiento,
+          to_char( ohentdate ,'dd/MM/yyyy HH24:mm:ss' )                                FechaEmision,
+          to_char( ohentdate ,'MM' ) Mes,
+          ohrefnum FactOnBase,
+          H.OHXACT   FactPago,
+          DN_NUM   Telefono ,
+          /*c.passportno              Identificacion,
+          nvl(b.prgname,'-') Tipo_Cliente,
+          ccemail                 Correo,
+          nvl(Round((trunc(sysdate) - h.ohduedate),0),0)  diasMora,*/
+          ohduedate
+      from Customer_all@bscs a
+              inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+              inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+              left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+              inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+              inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+              inner join directory_number@bscs g on g.dn_id       = f.dn_id
+              left outer join orderhdr_all@bscs h on h.customer_id = a.customer_id and h.ohstatus in ('FS','CS','IN', 'FE') --and nvl(h.ohopnamt_doc,1)>0
+      where
+          {}  /*dn_num like '50247705765'*/
+      ORDER BY ohduedate desc
+    ]]>
+    </query_hist_factura_502>
+
+    <query_hist_factura_503><![CDATA[
+          select
+              decode(a.paymntresp,'X', a.customer_id ,   decode(  nvl(a.customer_id_high,-1), -1, a.customer_id , a.customer_id_high  )   )  CodCliente,
+              /*e.co_id                 , g.dn_num                ,*/
+              concat(concat(c.ccname || ' ',c.ccfname || ' '),c.cclname)        razon_social,
+              round(ohopnamt_doc,2)                                             Saldo,
+              round(ohinvamt_gl,2)                                              MontoFacturado,
+              to_char( ohentdate ,'yyyy' )                                      yFacturacion,
+              to_char( ohduedate ,'dd/MM/yyyy HH24:mm:ss' )                                FechaVencimiento,
+              to_char( ohentdate ,'dd/MM/yyyy HH24:mm:ss' )                                FechaEmision,
+              to_char( ohentdate ,'MM' ) Mes,
+              ohrefnum FactOnBase,
+              H.OHXACT   FactPago,
+              DN_NUM   Telefono ,
+              /*c.passportno              Identificacion,
+              nvl(b.prgname,'-') Tipo_Cliente,
+              ccemail                 Correo,
+              nvl(Round((trunc(sysdate) - h.ohduedate),0),0)  diasMora,*/
+              ohduedate
+          from Customer_all@bscs a
+                  inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+                  inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+                  left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+                  inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+                  inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+                  inner join directory_number@bscs g on g.dn_id       = f.dn_id
+                  left outer join orderhdr_all@bscs h on h.customer_id = a.customer_id and h.ohstatus in ('FS','CS','IN', 'FE') --and nvl(h.ohopnamt_doc,1)>0
+          where
+              {}  /*dn_num like '50247705765'*/
+          ORDER BY ohduedate desc
+        ]]>
+    </query_hist_factura_503>
+
+    <query_hist_factura_504><![CDATA[
+          select
+              decode(a.paymntresp,'X', a.customer_id ,   decode(  nvl(a.customer_id_high,-1), -1, a.customer_id , a.customer_id_high  )   )  CodCliente,
+              /*e.co_id                 , g.dn_num                ,*/
+              concat(concat(c.ccname || ' ',c.ccfname || ' '),c.cclname)        razon_social,
+              round(ohopnamt_doc,2)                                             Saldo,
+              round(ohinvamt_gl,2)                                              MontoFacturado,
+              to_char( ohentdate ,'yyyy' )                                      yFacturacion,
+              to_char( ohduedate ,'dd/MM/yyyy HH24:mm:ss' )                                FechaVencimiento,
+              to_char( ohentdate ,'dd/MM/yyyy HH24:mm:ss' )                                FechaEmision,
+              to_char( ohentdate ,'MM' ) Mes,
+              ohrefnum FactOnBase,
+              H.OHXACT   FactPago,
+              DN_NUM   Telefono ,
+              /*c.passportno              Identificacion,
+              nvl(b.prgname,'-') Tipo_Cliente,
+              ccemail                 Correo,
+              nvl(Round((trunc(sysdate) - h.ohduedate),0),0)  diasMora,*/
+              ohduedate
+          from Customer_all@bscs a
+                  inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+                  inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+                  left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+                  inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+                  inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+                  inner join directory_number@bscs g on g.dn_id       = f.dn_id
+                  left outer join orderhdr_all@bscs h on h.customer_id = a.customer_id and h.ohstatus in ('FS','CS','IN', 'FE') --and nvl(h.ohopnamt_doc,1)>0
+          where
+              {}  /*dn_num like '50247705765'*/
+          ORDER BY ohduedate desc
+        ]]>
+    </query_hist_factura_504>
+
+    <query_hist_factura_505><![CDATA[
+          select
+              decode(a.paymntresp,'X', a.customer_id ,   decode(  nvl(a.customer_id_high,-1), -1, a.customer_id , a.customer_id_high  )   )  CodCliente,
+              /*e.co_id                 , g.dn_num                ,*/
+              concat(concat(c.ccname || ' ',c.ccfname || ' '),c.cclname)        razon_social,
+              round(ohopnamt_doc,2)                                             Saldo,
+              round(ohinvamt_gl,2)                                              MontoFacturado,
+              to_char( ohentdate ,'yyyy' )                                      yFacturacion,
+              to_char( ohduedate ,'dd/MM/yyyy HH24:mm:ss' )                                FechaVencimiento,
+              to_char( ohentdate ,'dd/MM/yyyy HH24:mm:ss' )                                FechaEmision,
+              to_char( ohentdate ,'MM' ) Mes,
+              ohrefnum FactOnBase,
+              H.OHXACT   FactPago,
+              DN_NUM   Telefono ,
+              /*c.passportno              Identificacion,
+              nvl(b.prgname,'-') Tipo_Cliente,
+              ccemail                 Correo,
+              nvl(Round((trunc(sysdate) - h.ohduedate),0),0)  diasMora,*/
+              ohduedate
+          from Customer_all@bscs a
+                  inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+                  inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+                  left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+                  inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+                  inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+                  inner join directory_number@bscs g on g.dn_id       = f.dn_id
+                  left outer join orderhdr_all@bscs h on h.customer_id = a.customer_id and h.ohstatus in ('FS','CS','IN', 'FE') --and nvl(h.ohopnamt_doc,1)>0
+          where
+              {}  /*dn_num like '50247705765'*/
+          ORDER BY ohduedate desc
+        ]]>
+    </query_hist_factura_505>
+
+    <query_hist_factura_506><![CDATA[
+          select
+              decode(a.paymntresp,'X', a.customer_id ,   decode(  nvl(a.customer_id_high,-1), -1, a.customer_id , a.customer_id_high  )   )  CodCliente,
+              /*e.co_id                 , g.dn_num                ,*/
+              concat(concat(c.ccname || ' ',c.ccfname || ' '),c.cclname)        razon_social,
+              round(ohopnamt_doc,2)                                             Saldo,
+              round(ohinvamt_gl,2)                                              MontoFacturado,
+              to_char( ohentdate ,'yyyy' )                                      yFacturacion,
+              to_char( ohduedate ,'dd/MM/yyyy HH24:mm:ss' )                                FechaVencimiento,
+              to_char( ohentdate ,'dd/MM/yyyy HH24:mm:ss' )                                FechaEmision,
+              to_char( ohentdate ,'MM' ) Mes,
+              ohrefnum FactOnBase,
+              H.OHXACT   FactPago,
+              DN_NUM   Telefono ,
+              /*c.passportno              Identificacion,
+              nvl(b.prgname,'-') Tipo_Cliente,
+              ccemail                 Correo,
+              nvl(Round((trunc(sysdate) - h.ohduedate),0),0)  diasMora,*/
+              ohduedate
+          from Customer_all@bscs a
+                  inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+                  inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+                  left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+                  inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+                  inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+                  inner join directory_number@bscs g on g.dn_id       = f.dn_id
+                  left outer join orderhdr_all@bscs h on h.customer_id = a.customer_id and h.ohstatus in ('FS','CS','IN', 'FE') --and nvl(h.ohopnamt_doc,1)>0
+          where
+              {}  /*dn_num like '50247705765'*/
+          ORDER BY ohduedate desc
+        ]]>
+    </query_hist_factura_506>
+
+    <query_hist_factura_507><![CDATA[
+          select
+              decode(a.paymntresp,'X', a.customer_id ,   decode(  nvl(a.customer_id_high,-1), -1, a.customer_id , a.customer_id_high  )   )  CodCliente,
+              /*e.co_id                 , g.dn_num                ,*/
+              concat(concat(c.ccname || ' ',c.ccfname || ' '),c.cclname)        razon_social,
+              round(ohopnamt_doc,2)                                             Saldo,
+              round(ohinvamt_gl,2)                                              MontoFacturado,
+              to_char( ohentdate ,'yyyy' )                                      yFacturacion,
+              to_char( ohduedate ,'dd/MM/yyyy HH24:mm:ss' )                                FechaVencimiento,
+              to_char( ohentdate ,'dd/MM/yyyy HH24:mm:ss' )                                FechaEmision,
+              to_char( ohentdate ,'MM' ) Mes,
+              ohrefnum FactOnBase,
+              H.OHXACT   FactPago,
+              DN_NUM   Telefono ,
+              /*c.passportno              Identificacion,
+              nvl(b.prgname,'-') Tipo_Cliente,
+              ccemail                 Correo,
+              nvl(Round((trunc(sysdate) - h.ohduedate),0),0)  diasMora,*/
+              ohduedate
+          from Customer_all@bscs a
+                  inner join PriceGroup_all@bscs   b on b.prgcode     = a.prgcode
+                  inner join Ccontact_all@bscs     c on c.customer_id = a.customer_id and c.ccseq       > 0 and c.ccseq  = (select max(x.ccseq) from ccontact_all@bscs x where c.customer_id = x.customer_id and ccbill = 'X') and c.ccbill = 'X'
+                  left outer join Trade_all@bscs   d on d.tradecode = a.cstradecode
+                  inner join  Contract_all@bscs    e on e.customer_id = a.customer_id
+                  inner join Contr_services_cap@bscs f on  f.co_id    = e.co_id and f.dn_id is not null and f.seqno       = (select max(z.seqno) from contr_services_cap@bscs z where e.co_id = z.co_id and z.seqno > 0) and f.cs_deactiv_date is null
+                  inner join directory_number@bscs g on g.dn_id       = f.dn_id
+                  left outer join orderhdr_all@bscs h on h.customer_id = a.customer_id and h.ohstatus in ('FS','CS','IN', 'FE') --and nvl(h.ohopnamt_doc,1)>0
+          where
+              {}  /*dn_num like '50247705765'*/
+          ORDER BY ohduedate desc
+        ]]>
+    </query_hist_factura_507>
+
+
+
+</root>
