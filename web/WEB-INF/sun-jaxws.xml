@@ -3,7 +3,5 @@
 <endpoints xmlns='http://java.sun.com/xml/ns/jax-ws/ri/runtime' version='2.0'>
 
     <endpoint  name='wsEntidades' implementation='WsServicios.Entidades.wsEntidades' url-pattern='/wsEntidades'/>
-    <endpoint  name='wsEntidades' implementation='WsServicios.Operaciones.wsOperaciones' url-pattern='/WsOperaciones'/>
-    <endpoint  name='wsEntidades' implementation='WsServicios.OperacionesAutogestion.wsAutogestion' url-pattern='/WsAutogestion'/>
     <endpoint  name='wsOrdenes' implementation='WsServicios.Ordenes.wsOrdenes' url-pattern='/wsOrdenes'/>
 </endpoints>
