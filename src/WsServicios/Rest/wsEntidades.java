@@ -113,25 +113,25 @@ public class wsEntidades extends BaseClass {
         }
     }
 
-                @GET
-                @Path("sAgencias_info")
-                @Produces(MediaType.APPLICATION_JSON)
-                public Response sAgencias_info(  ){
-                    try {
-                        wsEntidades_sAgencias vDatos =new  wsEntidades_sAgencias();
-                        vDatos.Instancia = wsInstancias.wsInstancia.ODA_503;
-                        vDatos.vDatosAgencia  = new wsR_Agencia();
-                        vDatos.vDatosAgencia.codAgencia = "CODIGO";
-                        vDatos.vDatosAgencia.nomAgencia = "NOMBRE";
-                        vDatos.vDatosAgencia.codSinergia = "SINERGIA";
-                        vDatos.vTipoAccion = wsTipoAccionManttos.wsTipoAccionMantto.A;
+    @GET
+    @Path("sAgencias_info")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response sAgencias_info(  ){
+        try {
+            wsEntidades_sAgencias vDatos =new  wsEntidades_sAgencias();
+            vDatos.Instancia = wsInstancias.wsInstancia.ODA_503;
+            vDatos.vDatosAgencia  = new wsR_Agencia();
+            vDatos.vDatosAgencia.codAgencia = "CODIGO";
+            vDatos.vDatosAgencia.nomAgencia = "NOMBRE";
+            vDatos.vDatosAgencia.codSinergia = "SINERGIA";
+            vDatos.vTipoAccion = wsTipoAccionManttos.wsTipoAccionMantto.A;
 
-                        GenericEntity<wsEntidades_sAgencias> genericEntity = new GenericEntity<wsEntidades_sAgencias>(vDatos){};
-                        return Response.ok(genericEntity, MediaType.APPLICATION_JSON).build();
-                    } catch (Exception e) {
-                        return Response.status(Response.Status.BAD_REQUEST).build();
-                    }
-                }
+            GenericEntity<wsEntidades_sAgencias> genericEntity = new GenericEntity<wsEntidades_sAgencias>(vDatos){};
+            return Response.ok(genericEntity, MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
 
 
     @POST

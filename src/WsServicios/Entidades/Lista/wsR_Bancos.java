@@ -13,10 +13,4 @@ public class wsR_Bancos
   public String vMensaje;
   public List<wsR_Banco> Datos = new ArrayList<>();
 
-  //public int getvEstado() { return this.vEstado; }
-  //public void setvEstado(int vEstado) { this.vEstado = vEstado; }
-  //public String getvMensaje() { return this.vMensaje; }
-  //public void setvMensaje(String vMensaje) { this.vMensaje = vMensaje; }
-  //public List<wsR_Banco> getDatos() { return this.Datos; }
-  //public void setDatos(List<wsR_Banco> datos) { this.Datos = datos; }
 }

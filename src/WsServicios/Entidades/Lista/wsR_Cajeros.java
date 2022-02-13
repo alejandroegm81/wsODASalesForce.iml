@@ -13,12 +13,4 @@ public class wsR_Cajeros
   public String vMensaje;
   public List<wsR_Cajero> Datos = new ArrayList<>();
 
-  //public int getvEstado() { return this.vEstado; }
-  //public void setvEstado(int vEstado) { this.vEstado = vEstado; }
-
-  //public String getvMensaje() { return this.vMensaje; }
-  //public void setvMensaje(String vMensaje) { this.vMensaje = vMensaje; }
-
-  //public List<wsR_Cajero> getDatos() { return this.Datos; }
-  //public void setDatos(List<wsR_Cajero> datos) { this.Datos = datos; }
 }

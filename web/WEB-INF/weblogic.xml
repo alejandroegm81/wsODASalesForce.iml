@@ -4,18 +4,4 @@
 
     <context-root>wsODASalesForce</context-root>
 
-    <!--
-    <jsp-descriptor>
-        <keepgenerated>true</keepgenerated>
-        <debug>true</debug>
-    </jsp-descriptor>
-
-
-    <fast-swap>
-        <enabled>true</enabled>
-    </fast-swap>
-    -->
-
-
-
 </weblogic-web-app>

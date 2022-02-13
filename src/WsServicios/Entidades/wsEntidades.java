@@ -172,7 +172,6 @@ public class wsEntidades
         return vResponse;
     }
 
-
     @WebMethod(operationName = "sAgencias")
     public SubDataTable sAgencias(@WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia, @WebParam(name = "vDatosAgencia") wsR_Agencia vDatosAgencia, @WebParam(name = "vTipoAccionMantto") wsTipoAccionManttos.wsTipoAccionMantto vTipoAccion) {
         SubDataTable dt = new SubDataTable();
@@ -220,7 +219,6 @@ public class wsEntidades
         }
         return dt;
     }
-
 
     @WebMethod(operationName = "sCajeros")
     public SubDataTable sCajeros(@WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia, @WebParam(name = "vDatosCajero") wsR_Cajero vDatosCajero, @WebParam(name = "vTipoAccionMantto") wsTipoAccionManttos.wsTipoAccionMantto vTipoAccion) {
@@ -392,7 +390,6 @@ public class wsEntidades
         }
         return dt;
     }
-
 
     private ConnectTo getConnectTo(wsInstancias.wsInstancia vInstancia) throws Exception {
         if (vInstancia == null) throw new Exception("La Instancia es invalida. Debe de ser ODA_{pais}");

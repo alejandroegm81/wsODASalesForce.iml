@@ -14,10 +14,4 @@ public class wsR_Cajas
   public String vMensaje;
   public List<wsR_Caja> Datos = new ArrayList<>();
 
-  //public int getvEstado() { return this.vEstado; }
-  //public void setvEstado(int vEstado) { this.vEstado = vEstado; }
-  //public String getvMensaje() { return this.vMensaje; }
-  //public void setvMensaje(String vMensaje) { this.vMensaje = vMensaje; }
-  //public List<wsR_Caja> getDatos() { return this.Datos; }
-  //public void setDatos(List<wsR_Caja> datos) { this.Datos = datos; }
 }
