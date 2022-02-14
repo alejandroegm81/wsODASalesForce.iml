@@ -1,14 +1,7 @@
 package WsServicios.Entidades;
 
 import FromNET.ConnectTo;
-import FromNET.GlobalDB;
-import FromNET.GlobalDBParamObject;
-import FromNET.GlobalDBParamObjectList;
-import FromNET.SubDataTable;
-import ServiceActionsDB.dbOperations;
-import ServiceActionsDB.dbROW;
 import WsServicios.Bases.wsInstancias;
-import WsServicios.Bases.wsTipoAccionManttos;
 import WsServicios.Entidades.Base.*;
 import WsServicios.Entidades.Lista.*;
 import WsServicios.Entidades.Request.*;
@@ -17,7 +10,6 @@ import db.BaseClass;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import java.sql.PreparedStatement;
 
 
 @WebService(serviceName = "wsEntidades", targetNamespace = "")
