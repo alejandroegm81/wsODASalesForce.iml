@@ -11,10 +11,7 @@ import WsServicios.Bases.wsInstancias;
 import WsServicios.Bases.wsTipoAccionManttos;
 import WsServicios.Entidades.Base.*;
 import WsServicios.Entidades.Lista.*;
-import WsServicios.Entidades.Request.wsRxml_gAgencias;
-import WsServicios.Entidades.Request.wsRxml_gPreciosODA;
-import WsServicios.Entidades.Request.wsRxml_gSeriesODA;
-import WsServicios.Entidades.Request.wsRxml_gTiposVenta;
+import WsServicios.Entidades.Request.*;
 import db.BaseClass;
 
 import javax.jws.WebMethod;
@@ -26,6 +23,35 @@ import java.sql.PreparedStatement;
 @WebService(serviceName = "wsEntidades", targetNamespace = "")
 public class wsEntidades
         extends BaseClass {
+
+    // ***********************************************************************
+    // gAlmacenes
+    // ***********************************************************************
+    @WebMethod(operationName = "gAlmacenes")
+    public wsR_Almacenes gAlmacenes(
+            @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
+            @WebParam(name = "Parametros") wsRxml_gAlmacenes Parametros ) {
+
+        wsR_Almacenes vResponse = new wsR_Almacenes();
+
+        wsR_Almacen registro = new wsR_Almacen();
+        registro.codAgencia = "P200";
+        registro.centro = "P200";
+        registro.almacen = "H000";
+        registro.descripcion = "Ventas";
+
+        vResponse.vEstado = 1;
+        vResponse.vMensaje = "Almacenes consultadas";
+        vResponse.Datos.add(registro);
+        vResponse.Datos.add(registro);
+        vResponse.Datos.add(registro);
+        vResponse.Datos.add(registro);
+        vResponse.Datos.add(registro);
+
+        return vResponse;
+
+    }
+
 
     // ***********************************************************************
     // gAgencias

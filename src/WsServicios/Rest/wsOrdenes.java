@@ -20,7 +20,7 @@ public class wsOrdenes extends BaseClass {
     @GET
     @Produces(MediaType.TEXT_HTML)
     public String sayHtmlHello() {
-        return "<html><title>wsOrdenes</title><body>wsEntidades</body></html>";
+        return "<html><title>wsOrdenes</title><body>wsOrdenes</body></html>";
     }
 
     // *******************************************************

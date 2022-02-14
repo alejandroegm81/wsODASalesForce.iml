@@ -21,7 +21,7 @@ public class wsOrdenes extends BaseClass {
             @WebParam(name = "vParametros") wsRxml_gExistencias vParametros) {
 
         wsR_Generic result = new wsR_Generic();
-        result.vEstado = 0;
+        result.vEstado = 1;
         result.vMensaje = "Ok";
         result.Datos = new wsR_Generic_Result();
         result.Datos.Resultado = "1";
@@ -38,7 +38,7 @@ public class wsOrdenes extends BaseClass {
             @WebParam(name = "vParametros") wsRxml_sReservaSerie vParametros) {
 
         wsR_Generic result = new wsR_Generic();
-        result.vEstado = 0;
+        result.vEstado = 1;
         result.vMensaje = "Ok";
         result.Datos = new wsR_Generic_Result();
         result.Datos.Resultado = "1";
@@ -55,7 +55,7 @@ public class wsOrdenes extends BaseClass {
             @WebParam(name = "vParametros") wsRxml_sLiberaSerie vParametros) {
 
         wsR_Generic result = new wsR_Generic();
-        result.vEstado = 0;
+        result.vEstado = 1;
         result.vMensaje = "Ok";
         result.Datos = new wsR_Generic_Result();
         result.Datos.Resultado = "1";
@@ -73,7 +73,7 @@ public class wsOrdenes extends BaseClass {
             @WebParam(name = "vInconformidad") String vInconformidad) {
 
         wsR_Inconformidad result = new wsR_Inconformidad();
-        result.vEstado = 0;
+        result.vEstado = 1;
         result.vMensaje = "Ok";
         result.Datos = new wsR_Inconformidad_Result();
         result.Datos.Contrato = "1";
@@ -93,7 +93,7 @@ public class wsOrdenes extends BaseClass {
             @WebParam(name = "vInconformidad") String vInconformidad) {
 
         wsR_Generic result = new wsR_Generic();
-        result.vEstado = 0;
+        result.vEstado = 1;
         result.vMensaje = "Ok";
         result.Datos = new wsR_Generic_Result();
         result.Datos.Resultado = "1";
@@ -111,7 +111,7 @@ public class wsOrdenes extends BaseClass {
             @WebParam(name = "vParametros") wsRxml_sAnulaPedido vParametros) {
 
         wsR_Anula result = new wsR_Anula();
-        result.vEstado = 0;
+        result.vEstado = 1;
         result.vMensaje = "Ok";
         result.Datos = new wsR_Anula_Result();
         result.Datos.Codigo = "1";
@@ -129,7 +129,7 @@ public class wsOrdenes extends BaseClass {
             @WebParam(name = "vOrden") String vOrden) {
 
         wsR_Anula result = new wsR_Anula();
-        result.vEstado = 0;
+        result.vEstado = 1;
         result.vMensaje = "Ok";
         result.Datos = new wsR_Anula_Result();
         result.Datos.Codigo = "1";
@@ -148,7 +148,7 @@ public class wsOrdenes extends BaseClass {
             @WebParam(name = "vOrden") String vOrden) {
 
         wsR_Anula result = new wsR_Anula();
-        result.vEstado = 0;
+        result.vEstado = 1;
         result.vMensaje = "Ok";
         result.Datos = new wsR_Anula_Result();
         result.Datos.Codigo = "1";
@@ -167,7 +167,7 @@ public class wsOrdenes extends BaseClass {
             @WebParam(name = "vOrden") wsRxml_sInsertaOrden vOrden) {
 
         wsR_Orden result = new wsR_Orden();
-        result.vEstado = 0;
+        result.vEstado = 1;
         result.vMensaje = "Ok";
         result.Datos = new wsR_Orden_Result();
         result.Datos.Resultado = "1";

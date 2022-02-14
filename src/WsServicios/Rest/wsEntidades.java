@@ -2,10 +2,7 @@ package WsServicios.Rest;
 
 import WsServicios.Bases.wsInstancias;
 import WsServicios.Entidades.Lista.*;
-import WsServicios.Rest.Request.wsR_gAgencias;
-import WsServicios.Rest.Request.wsR_gPreciosODA;
-import WsServicios.Rest.Request.wsR_gSeriesODA;
-import WsServicios.Rest.Request.wsR_gTiposVenta;
+import WsServicios.Rest.Request.*;
 import db.BaseClass;
 
 import javax.ws.rs.*;
@@ -16,6 +13,14 @@ import javax.ws.rs.core.Response;
 @Path("wsEntidades")
 public class wsEntidades extends BaseClass {
 
+    // *******************************************************
+    // Default Endpoint to Rest
+    // *******************************************************
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    public String sayHtmlHello() {
+        return "<html><title>wsEntidades</title><body>wsEntidades</body></html>";
+    }
 
 //    @GET
 //    @Path("gBancos/{ins}")
@@ -38,6 +43,7 @@ public class wsEntidades extends BaseClass {
     @POST
     @Path("gPreciosODA")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response gPreciosODA(wsR_gPreciosODA parametros){
         try {
             wsR_PreciosODA vReturn =  new wsR_PreciosODA();
@@ -58,6 +64,7 @@ public class wsEntidades extends BaseClass {
     @POST
     @Path("gSeriesODA")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response gSeriesODA(wsR_gSeriesODA parametros){
         try {
             WsServicios.Entidades.wsEntidades wE = new WsServicios.Entidades.wsEntidades();
@@ -78,6 +85,7 @@ public class wsEntidades extends BaseClass {
     @POST
     @Path("gAgencias")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response gAgencias(wsR_gAgencias parametros){
         try {
             WsServicios.Entidades.wsEntidades wE = new WsServicios.Entidades.wsEntidades();
@@ -96,6 +104,7 @@ public class wsEntidades extends BaseClass {
     @POST
     @Path("gTiposVenta")
     @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
     public Response gTiposVenta(wsR_gTiposVenta parametros){
         try {
             WsServicios.Entidades.wsEntidades wE = new WsServicios.Entidades.wsEntidades();
@@ -107,6 +116,27 @@ public class wsEntidades extends BaseClass {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+
+
+    // ************************************************************
+    // gAlmacenes
+    // ************************************************************
+    @POST
+    @Path("gAlmacenes")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response gAlmacenes(wsR_gAlmacenes parametros){
+        try {
+            WsServicios.Entidades.wsEntidades wE = new WsServicios.Entidades.wsEntidades();
+            wsR_Almacenes vReturn = wE.gAlmacenes( parametros.Instancia, parametros.Parametros );
+
+            GenericEntity<wsR_Almacenes> genericEntity = new GenericEntity<wsR_Almacenes>(vReturn){};
+            return Response.ok(genericEntity, MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
 
 
 }
