@@ -10,5 +10,9 @@ public class wsR_Agencia implements Serializable {
   @XmlElement
   public String nomAgencia;
   @XmlElement
-  public String codSinergia;
+  public String clientSinergia;
+  @XmlElement
+  public String canalVentas;
+  @XmlElement
+  public String tipoAgencia;
 }
