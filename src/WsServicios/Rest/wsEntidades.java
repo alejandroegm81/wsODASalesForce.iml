@@ -2,8 +2,10 @@ package WsServicios.Rest;
 
 import WsServicios.Bases.wsInstancias;
 import WsServicios.Entidades.Lista.*;
+import WsServicios.Rest.Request.wsR_gAgencias;
 import WsServicios.Rest.Request.wsR_gPreciosODA;
 import WsServicios.Rest.Request.wsR_gSeriesODA;
+import WsServicios.Rest.Request.wsR_gTiposVenta;
 import db.BaseClass;
 
 import javax.ws.rs.*;
@@ -15,20 +17,20 @@ import javax.ws.rs.core.Response;
 public class wsEntidades extends BaseClass {
 
 
-    @GET
-    @Path("gBancos/{ins}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response gBancos(@PathParam("ins") wsInstancias.wsInstancia Instancia) {
-        try {
-            WsServicios.Entidades.wsEntidades wE = new WsServicios.Entidades.wsEntidades();
-            wsR_Bancos vReturn = wE.gBancos( Instancia );
-
-            GenericEntity<wsR_Bancos> genericEntity = new GenericEntity<wsR_Bancos>(vReturn){};
-            return Response.ok(genericEntity, MediaType.APPLICATION_JSON).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-    }
+//    @GET
+//    @Path("gBancos/{ins}")
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response gBancos(@PathParam("ins") wsInstancias.wsInstancia Instancia) {
+//        try {
+//            WsServicios.Entidades.wsEntidades wE = new WsServicios.Entidades.wsEntidades();
+//            wsR_Bancos vReturn = wE.gBancos( Instancia );
+//
+//            GenericEntity<wsR_Bancos> genericEntity = new GenericEntity<wsR_Bancos>(vReturn){};
+//            return Response.ok(genericEntity, MediaType.APPLICATION_JSON).build();
+//        } catch (Exception e) {
+//            return Response.status(Response.Status.BAD_REQUEST).build();
+//        }
+//    }
 
     // ************************************************************
     // gPreciosODA
@@ -68,6 +70,43 @@ public class wsEntidades extends BaseClass {
         }
     }
 
+
+
+    // ************************************************************
+    // gAgencias
+    // ************************************************************
+    @POST
+    @Path("gAgencias")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response gAgencias(wsR_gAgencias parametros){
+        try {
+            WsServicios.Entidades.wsEntidades wE = new WsServicios.Entidades.wsEntidades();
+            wsR_Agencias vReturn = wE.gAgencias( parametros.Instancia, parametros.Parametros );
+
+            GenericEntity<wsR_Agencias> genericEntity = new GenericEntity<wsR_Agencias>(vReturn){};
+            return Response.ok(genericEntity, MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
+    // ************************************************************
+    // gTiposVenta
+    // ************************************************************
+    @POST
+    @Path("gTiposVenta")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response gTiposVenta(wsR_gTiposVenta parametros){
+        try {
+            WsServicios.Entidades.wsEntidades wE = new WsServicios.Entidades.wsEntidades();
+            wsR_TiposVenta vReturn = wE.gTiposVenta( parametros.Instancia, parametros.Parametros );
+
+            GenericEntity<wsR_TiposVenta> genericEntity = new GenericEntity<wsR_TiposVenta>(vReturn){};
+            return Response.ok(genericEntity, MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
 
 
 }
