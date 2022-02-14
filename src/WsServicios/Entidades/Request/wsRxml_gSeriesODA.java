@@ -5,16 +5,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @XmlRootElement
-public class wsRxml_gPreciosODA implements Serializable {
-
+public class wsRxml_gSeriesODA implements Serializable {
     @XmlElement
-    public String motivoPedido;
+    public String serie;
     @XmlElement
     public String codProducto;
     @XmlElement
-    public String grupoCondiciones;
+    public String estatus;
     @XmlElement
-    public String grupoComisiones;
-
-
+    public String codAgencia;
 }

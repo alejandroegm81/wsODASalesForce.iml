@@ -12,6 +12,7 @@ import WsServicios.Bases.wsTipoAccionManttos;
 import WsServicios.Entidades.Base.*;
 import WsServicios.Entidades.Lista.*;
 import WsServicios.Entidades.Request.wsRxml_gPreciosODA;
+import WsServicios.Entidades.Request.wsRxml_gSeriesODA;
 import db.BaseClass;
 
 import javax.jws.WebMethod;
@@ -24,13 +25,44 @@ import java.sql.PreparedStatement;
 public class wsEntidades
         extends BaseClass {
 
+    @WebMethod(operationName = "gSeriesODA")
+    public wsR_Series gSeriesODA(
+            @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
+            @WebParam(name = "Parametros") wsRxml_gSeriesODA Parametros ) {
+
+        wsR_Series vResponse = new wsR_Series();
+
+        wsR_Serie serie = new wsR_Serie();
+        serie.almacen = "H000";
+        serie.serie = "123";
+        serie.codAgencia = "P202";
+        serie.codCajero = "cajero";
+        serie.estatus = "VE";
+        serie.idSinergia = "10000";
+        serie.idVenta = 123;
+        serie.nomAgencia = "Agencia";
+        serie.orden = "12344";
+        serie.producto = "SIM";
+        serie.sku = "i09";
+
+        vResponse.vEstado = 1;
+        vResponse.vMensaje = "Series consultadas";
+        vResponse.Datos.add(serie);
+        vResponse.Datos.add(serie);
+        vResponse.Datos.add(serie);
+        vResponse.Datos.add(serie);
+        vResponse.Datos.add(serie);
+
+        return vResponse;
+
+    }
+
     @WebMethod(operationName = "gPreciosODA")
     public wsR_PreciosODA gPreciosODA (
             @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
             @WebParam(name = "Parametros") wsRxml_gPreciosODA Parametros) {
 
         wsR_PreciosODA vResponse = new wsR_PreciosODA();
-        wsR_PrecioODADetalle vDetalle = new wsR_PrecioODADetalle();
 
         wsR_PrecioODA precio = new wsR_PrecioODA();
         precio.claseCondicion = "clase";
@@ -49,16 +81,15 @@ public class wsEntidades
         precio.validoA = "2022-01-01";
         precio.validoDe = "2022-01-01";
 
-        vResponse.vEstado = 0 ;
+        vResponse.vEstado = 1 ;
         vResponse.vMensaje = "Consulta de precios ODA";
 
-        vDetalle.Registro.add(precio);
-        vDetalle.Registro.add(precio);
-        vDetalle.Registro.add(precio);
-        vDetalle.Registro.add(precio);
-        vDetalle.Registro.add(precio);
-
-        vResponse.Datos = vDetalle;
+        vResponse.Datos.add(precio);
+        vResponse.Datos.add(precio);
+        vResponse.Datos.add(precio);
+        vResponse.Datos.add(precio);
+        vResponse.Datos.add(precio);
+        vResponse.Datos.add(precio);
 
         return vResponse;
 
