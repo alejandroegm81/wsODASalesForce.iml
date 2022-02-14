@@ -12,6 +12,9 @@ import javax.jws.WebService;
 @WebService(serviceName = "wsOrdenes", targetNamespace = "")
 public class wsOrdenes extends BaseClass {
 
+    // *****************************************************************************
+    // gExistencias
+    // *****************************************************************************
     @WebMethod(operationName = "gExistencias")
     public wsR_Generic gExistencias(
             @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
@@ -26,6 +29,9 @@ public class wsOrdenes extends BaseClass {
 
     }
 
+    // *****************************************************************************
+    // sReservaSerie
+    // *****************************************************************************
     @WebMethod(operationName = "sReservaSerie")
     public wsR_Generic sReservaSerie(
             @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
@@ -40,6 +46,9 @@ public class wsOrdenes extends BaseClass {
 
     }
 
+    // *****************************************************************************
+    // sLiberaSerie
+    // *****************************************************************************
     @WebMethod(operationName = "sLiberaSerie")
     public wsR_Generic sLiberSerie(
             @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
@@ -55,6 +64,9 @@ public class wsOrdenes extends BaseClass {
     }
 
 
+    // *****************************************************************************
+    // gConsultaInconformidad
+    // *****************************************************************************
     @WebMethod(operationName = "gConsultaInconformidad")
     public wsR_Inconformidad gConsultaInconformidad(
             @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
@@ -72,6 +84,9 @@ public class wsOrdenes extends BaseClass {
     }
 
 
+    // *****************************************************************************
+    // sActualizaInconformidad
+    // *****************************************************************************
     @WebMethod(operationName = "sActualizaInconformidad")
     public wsR_Generic sActualizaInconformidad(
             @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
@@ -87,6 +102,9 @@ public class wsOrdenes extends BaseClass {
     }
 
 
+    // *****************************************************************************
+    // sAnulaPedido
+    // *****************************************************************************
     @WebMethod(operationName = "sAnulaPedido")
     public wsR_Anula sAnulaPedido(
             @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
@@ -102,6 +120,9 @@ public class wsOrdenes extends BaseClass {
 
     }
 
+    // *****************************************************************************
+    // gConsultaEstadoVenta
+    // *****************************************************************************
     @WebMethod(operationName = "gConsultaEstadoVenta")
     public wsR_Anula gConsultaEstadoVenta(
             @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
@@ -118,6 +139,9 @@ public class wsOrdenes extends BaseClass {
     }
 
 
+    // *****************************************************************************
+    // gConsultaEstadoAnulacion
+    // *****************************************************************************
     @WebMethod(operationName = "gConsultaEstadoAnulacion")
     public wsR_Anula gConsultaEstadoAnulacion(
             @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
@@ -134,7 +158,9 @@ public class wsOrdenes extends BaseClass {
     }
 
 
-
+    // *****************************************************************************
+    // sInsertaOrden
+    // *****************************************************************************
     @WebMethod(operationName = "sInsertaOrden")
     public wsR_Orden sInsertaOrden(
             @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
