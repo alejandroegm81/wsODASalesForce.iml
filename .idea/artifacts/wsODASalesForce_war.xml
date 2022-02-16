@@ -1,7 +1,7 @@
 <component name="ArtifactManager">
   <artifact type="war" build-on-make="true" name="wsODASalesForce:war">
     <output-path>$PROJECT_DIR$/out/artifacts/wsODASalesForce_war</output-path>
-    <root id="archive" name="wsODAListenerRegional.war">
+    <root id="archive" name="wsODASalesForce.war">
       <element id="artifact" artifact-name="wsODASalesForce:war exploded" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="lib">
