@@ -70,7 +70,7 @@ public class wsOrdenes extends BaseClass {
         try {
 
             WsServicios.Ordenes.wsOrdenes wO = new WsServicios.Ordenes.wsOrdenes();
-            wsR_Generic vReturn = wO.sLiberSerie(vDatos.Instancia, vDatos.Parametros);
+            wsR_Generic vReturn = wO.sLiberaSerie(vDatos.Instancia, vDatos.Parametros);
             return Response.ok(vReturn, MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
             return Response.status(Response.Status.BAD_REQUEST).build();
