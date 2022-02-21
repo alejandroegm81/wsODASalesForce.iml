@@ -36,8 +36,8 @@ public class wsOrdenes extends BaseClass {
     // obteniendo existencias según los parametros
     SubDataTable dt = new SubDataTable();
     GlobalDB db = new GlobalDB();
-    OracleConnection _ODA;
-    CallableStatement _cmd;
+    OracleConnection _ODA = null;
+    CallableStatement _cmd = null;
 
     // parameters
     // - cod_producto:varchar2
@@ -70,7 +70,6 @@ public class wsOrdenes extends BaseClass {
           result.vMensaje = result.vMensaje + "[" + _cmd.getString(5)  + "]";
           result.Datos.Resultado = _cmd.getLong(4) + "";
         }
-        _cmd.close();
       } else {
         result.vEstado = 0;
         result.vMensaje = "Consulta de existencias no obtuvo resultados";
@@ -80,6 +79,9 @@ public class wsOrdenes extends BaseClass {
     } catch (Exception e) {
       result.vEstado = -1;
       result.vMensaje = "Consulta de existencias error [" + e.getMessage() +"]";
+    } finally {
+      try { _cmd.close();} catch (Exception ignored) {}
+      try { _ODA.close();} catch (Exception ignored) {}
     }
 
 
@@ -97,9 +99,66 @@ public class wsOrdenes extends BaseClass {
 
     wsR_Generic result = new wsR_Generic();
     result.vEstado = 1;
-    result.vMensaje = "Ok";
+    result.vMensaje = "OK::Reserva de series satisfactoria";
     result.Datos = new wsR_Generic_Result();
-    result.Datos.Resultado = "1";
+    result.Datos.Resultado = "-1";
+
+
+    // obteniendo existencias según los parametros
+    SubDataTable dt = new SubDataTable();
+    GlobalDB db = new GlobalDB();
+    OracleConnection _ODA = null;
+    CallableStatement _cmd = null;
+
+    // parameters
+    // - orden:varchar2
+    // - serie:varchar2
+    // - cod_producto:varchar2
+    // - almacen:varchar2
+    // - agencia:varchar2
+    // - resultado:varchar2:out:12
+    String vQuery = "{CALL pkg_sas_genera.reserva_serie(?,?,?,?,?,?)}";
+
+    try {
+      // conexión
+      _ODA = db.getODADBConnection(getConnectTo(Instancia));
+      // procedimiento
+      _cmd = _ODA.prepareCall(vQuery);
+      // parametros
+      _cmd.setString(1, vParametros.orden);
+      _cmd.setString(2, vParametros.serie);
+      _cmd.setString(3, vParametros.material);
+      _cmd.setString(4, vParametros.codAlmacen);
+      _cmd.setString(5, vParametros.codAgencia);
+      _cmd.registerOutParameter(6, 12, 1000);
+
+      // ejecutar parametros
+      dt = db.setQuery(_cmd);
+      if (dt.vData) {
+        if (!_cmd.getString(6).equals("0")) {
+          result.vEstado = 0;
+          result.Datos.Resultado = _cmd.getString(6);
+          result.vMensaje = "Reserva de series con resultado [" + _cmd.getString(6) +"]";
+        } else {
+          result.vMensaje = result.vMensaje + " [" + _cmd.getString(6)  + "]";
+          result.Datos.Resultado = _cmd.getString(6);
+        }
+      } else {
+        result.vEstado = 0;
+        result.vMensaje = "Reserva de series no obtuvo resultados";
+
+      }
+
+    } catch (Exception e) {
+      result.vEstado = -1;
+      result.vMensaje = "Reserva de series error [" + e.getMessage() +"]";
+    } finally {
+      try { _cmd.close();} catch (Exception ignored) {}
+      try { _ODA.close();} catch (Exception ignored) {}
+    }
+
+
+
     return result;
 
   }
@@ -108,15 +167,66 @@ public class wsOrdenes extends BaseClass {
   // sLiberaSerie
   // *****************************************************************************
   @WebMethod(operationName = "sLiberaSerie")
-  public wsR_Generic sLiberSerie(
+  public wsR_Generic sLiberaSerie(
       @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
       @WebParam(name = "vParametros") wsRxml_sLiberaSerie vParametros) {
 
     wsR_Generic result = new wsR_Generic();
     result.vEstado = 1;
-    result.vMensaje = "Ok";
+    result.vMensaje = "OK::Liberación de series satisfactoria";
     result.Datos = new wsR_Generic_Result();
-    result.Datos.Resultado = "1";
+    result.Datos.Resultado = "-1";
+
+
+    // obteniendo existencias según los parametros
+    SubDataTable dt = new SubDataTable();
+    GlobalDB db = new GlobalDB();
+    OracleConnection _ODA = null;
+    CallableStatement _cmd = null;
+
+    // parameters
+    // - orden:varchar2
+    // - serie:varchar2
+    // - resultado:varchar2:out:12
+    String vQuery = "{CALL pkg_sas_genera.libera_serie(?,?,?)}";
+
+    try {
+      // conexión
+      _ODA = db.getODADBConnection(getConnectTo(Instancia));
+      // procedimiento
+      _cmd = _ODA.prepareCall(vQuery);
+      // parametros
+      _cmd.setString(1, vParametros.orden);
+      _cmd.setString(2, vParametros.serie);
+      _cmd.registerOutParameter(3, 12, 1000);
+
+      // ejecutar parametros
+      dt = db.setQuery(_cmd);
+      if (dt.vData) {
+        if (!_cmd.getString(3).equals("0")) {
+          result.vEstado = 0;
+          result.Datos.Resultado = _cmd.getString(3);
+          result.vMensaje = "Liberación de series con resultado [" + _cmd.getString(3) +"]";
+        } else {
+          result.vMensaje = result.vMensaje + " [" + _cmd.getString(3)  + "]";
+          result.Datos.Resultado = _cmd.getString(3);
+        }
+      } else {
+        result.vEstado = 0;
+        result.vMensaje = "Liberación de series no obtuvo resultados";
+
+      }
+
+    } catch (Exception e) {
+      result.vEstado = -1;
+      result.vMensaje = "Liberación de series error [" + e.getMessage() +"]";
+    } finally {
+      try { _cmd.close();} catch (Exception ignored) {}
+      try { _ODA.close();} catch (Exception ignored) {}
+    }
+
+
+
     return result;
 
   }
