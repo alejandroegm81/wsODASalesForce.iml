@@ -242,11 +242,64 @@ public class wsOrdenes extends BaseClass {
 
     wsR_Inconformidad result = new wsR_Inconformidad();
     result.vEstado = 1;
-    result.vMensaje = "Ok";
+    result.vMensaje = "Ok::Consulta inconformidad satisfactoria";
     result.Datos = new wsR_Inconformidad_Result();
-    result.Datos.Contrato = "1";
-    result.Datos.Monto = 100.00;
-    result.Datos.Nivel = "1000";
+    result.Datos.Contrato = "0";
+    result.Datos.Monto = "0.00";
+    result.Datos.Nivel = "0";
+
+    if (Instancia == wsInstancias.wsInstancia.ODA_502) {
+
+      // obteniendo existencias según los parametros
+      SubDataTable dt = new SubDataTable();
+      GlobalDB db = new GlobalDB();
+      OracleConnection _ODA = null;
+      CallableStatement _cmd = null;
+
+      // parameters
+      // - inconformidad:varchar2
+      // - monto:varchar2:out:12
+      // - contrato:varchar2:out:12
+      // - nivel:varchar2:out:12
+      String vQuery = "{CALL pkg_sas_genera.consulta_inconformidad(?,?,?,?)}";
+
+      try {
+        // conexión
+        _ODA = db.getODADBConnection(getConnectTo(Instancia));
+        // procedimiento
+        _cmd = _ODA.prepareCall(vQuery);
+        // parametros
+        _cmd.setString(1, vInconformidad);
+        _cmd.registerOutParameter(2, 12, 1000);
+        _cmd.registerOutParameter(3, 12, 1000);
+        _cmd.registerOutParameter(4, 12, 1000);
+
+        // ejecutar parametros
+        dt = db.setQuery(_cmd);
+        if (dt.vData) {
+          result.Datos.Contrato = _cmd.getString(2);
+          result.Datos.Monto = _cmd.getString(3);
+          result.Datos.Nivel = _cmd.getString(4);
+        } else {
+          result.vEstado = 0;
+          result.vMensaje = "Consulta inconformidad sin resultados";
+        }
+
+      } catch (Exception e) {
+        result.vEstado = -1;
+        result.vMensaje = "Consulta inconformidad error [" + e.getMessage() +"]";
+      } finally {
+        try { _cmd.close();} catch (Exception ignored) {}
+        try { _ODA.close();} catch (Exception ignored) {}
+      }
+
+    } else {
+      result.vEstado = 0;
+      result.vMensaje = "ERROR::Consulta inconformidad no implementada para el pais";
+    }
+
+
+
     return result;
 
   }
@@ -262,9 +315,71 @@ public class wsOrdenes extends BaseClass {
 
     wsR_Generic result = new wsR_Generic();
     result.vEstado = 1;
-    result.vMensaje = "Ok";
+    result.vMensaje = "OK::Actualización de inconformidad satisfactoria";
     result.Datos = new wsR_Generic_Result();
-    result.Datos.Resultado = "1";
+    result.Datos.Resultado = "-1";
+
+    if (Instancia == wsInstancias.wsInstancia.ODA_502) {
+
+
+      // obteniendo existencias según los parametros
+      SubDataTable dt = new SubDataTable();
+      GlobalDB db = new GlobalDB();
+      OracleConnection _ODA = null;
+      CallableStatement _cmd = null;
+
+      // parameters\
+      // - inconformidad:varchar2
+      // - resultado:varchar2:out:12
+      String vQuery = "{CALL pkg_sas_genera.actualiza_inconformidad(?,?)}";
+
+      try {
+        // conexión
+        _ODA = db.getODADBConnection(getConnectTo(Instancia));
+        // procedimiento
+        _cmd = _ODA.prepareCall(vQuery);
+        // parametros
+        _cmd.setString(1, vInconformidad);
+        _cmd.registerOutParameter(2, 12, 1000);
+
+        // ejecutar parametros
+        dt = db.setQuery(_cmd);
+        if (dt.vData) {
+          if (!_cmd.getString(2).startsWith("OK")) {
+            result.vEstado = 0;
+            result.Datos.Resultado = _cmd.getString(2);
+            result.vMensaje = "Actualización de Inconformidad con resultado [" + _cmd.getString(2) + "]";
+          } else {
+            result.vMensaje = result.vMensaje + " [" + _cmd.getString(2) + "]";
+            result.Datos.Resultado = _cmd.getString(2);
+          }
+        } else {
+          result.vEstado = 0;
+          result.vMensaje = "Actualización de Inconformidad no obtuvo resultados";
+
+        }
+
+      } catch (Exception e) {
+        result.vEstado = -1;
+        result.vMensaje = "Actualización de Inconformidad error [" + e.getMessage() + "]";
+      } finally {
+        try {
+          _cmd.close();
+        } catch (Exception ignored) {
+        }
+        try {
+          _ODA.close();
+        } catch (Exception ignored) {
+        }
+      }
+
+    } else {
+      result.vEstado = 0;
+      result.vMensaje = "ERROR::Actualización de inconformidad no implementada para el pais";
+
+    }
+
+
     return result;
 
   }
@@ -280,10 +395,65 @@ public class wsOrdenes extends BaseClass {
 
     wsR_Anula result = new wsR_Anula();
     result.vEstado = 1;
-    result.vMensaje = "Ok";
+    result.vMensaje = "Ok::Anulación de pedido satisfactorio";
     result.Datos = new wsR_Anula_Result();
     result.Datos.Codigo = "1";
     result.Datos.Descripcion = "X";
+
+
+    // obteniendo existencias según los parametros
+    SubDataTable dt = new SubDataTable();
+    GlobalDB db = new GlobalDB();
+    OracleConnection _ODA = null;
+    CallableStatement _cmd = null;
+
+    // parameters
+    // - correlativo:varchar2
+    // - usuario:varchar2
+    // - codigo:varchar2:out:12
+    // - descripcion:varchar2:out:12
+    String vQuery = "{CALL pkg_crm_oda_anula.anula_venta(?,?,?,?)}";
+
+    try {
+      // conexión
+      _ODA = db.getODADBConnection(getConnectTo(Instancia));
+      // procedimiento
+      _cmd = _ODA.prepareCall(vQuery);
+      // parametros
+      _cmd.setString(1, vParametros.orden);
+      _cmd.setString(2, vParametros.usuario);
+      _cmd.registerOutParameter(3, 12, 1000);
+      _cmd.registerOutParameter(4, 12, 1000);
+
+      // ejecutar parametros
+      dt = db.setQuery(_cmd);
+      if (dt.vData) {
+        if (!_cmd.getString(3).equals("OK")) {
+          result.vEstado = 0;
+          result.Datos.Codigo = _cmd.getString(3);
+          result.Datos.Descripcion = _cmd.getString(4);
+          result.vMensaje = "Anulación de pedido con resultado [" + _cmd.getString(3) +"]";
+        } else {
+          result.vMensaje = result.vMensaje + " [" + _cmd.getString(3)  + "]";
+          result.Datos.Codigo = _cmd.getString(3);
+          result.Datos.Descripcion = _cmd.getString(4);
+        }
+      } else {
+        result.vEstado = 0;
+        result.vMensaje = "Anulación de pedido no obtuvo resultados";
+
+      }
+
+    } catch (Exception e) {
+      result.vEstado = -1;
+      result.vMensaje = "Anulación de pedido error [" + e.getMessage() +"]";
+    } finally {
+      try { _cmd.close();} catch (Exception ignored) {}
+      try { _ODA.close();} catch (Exception ignored) {}
+    }
+
+
+
     return result;
 
   }
@@ -298,11 +468,59 @@ public class wsOrdenes extends BaseClass {
 
     wsR_Anula result = new wsR_Anula();
     result.vEstado = 1;
-    result.vMensaje = "Ok";
+    result.vMensaje = "Ok::Consulta Estado Venta Satisfactorio";
     result.Datos = new wsR_Anula_Result();
     result.Datos.Codigo = "1";
     result.Datos.Descripcion = "X";
+
+
+    // obteniendo existencias según los parametros
+    SubDataTable dt = new SubDataTable();
+    GlobalDB db = new GlobalDB();
+    OracleConnection _ODA = null;
+    CallableStatement _cmd = null;
+
+    // parameters
+    // - orden:varchar2
+    // - codigo:varchar2:out:12
+    // - descripcion:varchar2:out:12
+    String vQuery = "{CALL pkg_crm_oda_anula.consulta_estado_venta(?,?,?)}";
+
+    try {
+      // conexión
+      _ODA = db.getODADBConnection(getConnectTo(Instancia));
+      // procedimiento
+      _cmd = _ODA.prepareCall(vQuery);
+      // parametros
+      _cmd.setString(1, vOrden);
+      _cmd.registerOutParameter(2, 12, 1000);
+      _cmd.registerOutParameter(3, 12, 1000);
+
+      // ejecutar parametros
+      dt = db.setQuery(_cmd);
+      if (dt.vData) {
+          result.Datos.Codigo = _cmd.getString(2);
+          result.Datos.Descripcion = _cmd.getString(3);
+          result.vMensaje = "Consulta estado venta realizada";
+      } else {
+        result.vEstado = 0;
+        result.vMensaje = "Consulta estado venta no obtuvo resultados";
+
+      }
+
+    } catch (Exception e) {
+      result.vEstado = -1;
+      result.vMensaje = "Consulta estado venta error [" + e.getMessage() +"]";
+    } finally {
+      try { _cmd.close();} catch (Exception ignored) {}
+      try { _ODA.close();} catch (Exception ignored) {}
+    }
+
+
+
     return result;
+
+
 
   }
 
@@ -317,10 +535,56 @@ public class wsOrdenes extends BaseClass {
 
     wsR_Anula result = new wsR_Anula();
     result.vEstado = 1;
-    result.vMensaje = "Ok";
+    result.vMensaje = "Ok::Consulta Estado Anulación Satisfactorio";
     result.Datos = new wsR_Anula_Result();
     result.Datos.Codigo = "1";
     result.Datos.Descripcion = "X";
+
+
+    // obteniendo existencias según los parametros
+    SubDataTable dt = new SubDataTable();
+    GlobalDB db = new GlobalDB();
+    OracleConnection _ODA = null;
+    CallableStatement _cmd = null;
+
+    // parameters
+    // - orden:varchar2
+    // - codigo:varchar2:out:12
+    // - descripcion:varchar2:out:12
+    String vQuery = "{CALL pkg_crm_oda_anula.consulta_estado_anulacion(?,?,?)}";
+
+    try {
+      // conexión
+      _ODA = db.getODADBConnection(getConnectTo(Instancia));
+      // procedimiento
+      _cmd = _ODA.prepareCall(vQuery);
+      // parametros
+      _cmd.setString(1, vOrden);
+      _cmd.registerOutParameter(2, 12, 1000);
+      _cmd.registerOutParameter(3, 12, 1000);
+
+      // ejecutar parametros
+      dt = db.setQuery(_cmd);
+      if (dt.vData) {
+        result.Datos.Codigo = _cmd.getString(2);
+        result.Datos.Descripcion = _cmd.getString(3);
+        result.vMensaje = "Consulta estado Anulación realizada";
+      } else {
+        result.vEstado = 0;
+        result.vMensaje = "Consulta estado Anulación no obtuvo resultados";
+
+      }
+
+    } catch (Exception e) {
+      result.vEstado = -1;
+      result.vMensaje = "Consulta estado Anulación error [" + e.getMessage() +"]";
+    } finally {
+      try { _cmd.close();} catch (Exception ignored) {}
+      try { _ODA.close();} catch (Exception ignored) {}
+    }
+
+
+
     return result;
 
   }
