@@ -12,6 +12,6 @@ public class wsR_sInsertaOrden {
     public wsInstancias.wsInstancia Instancia;
 
     @XmlElement
-    public wsRxml_sInsertaOrden vParametros;
+    public wsRxml_sInsertaOrden Parametros;
 
 }
