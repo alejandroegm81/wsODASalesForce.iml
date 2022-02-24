@@ -838,7 +838,7 @@ public class wsOrdenes extends BaseClass {
   }
 
   // *****************************************************************************
-  // Detalle de la Orden
+  // ConnecTo
   // *****************************************************************************
   private ConnectTo getConnectTo(wsInstancias.wsInstancia vInstancia) throws Exception {
     if (vInstancia == null) throw new Exception("La Instancia es invalida. Debe de ser ODA_{pais}");

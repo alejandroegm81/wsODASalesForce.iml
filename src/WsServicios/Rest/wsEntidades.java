@@ -129,7 +129,6 @@ public class wsEntidades extends BaseClass {
         try {
             WsServicios.Entidades.wsEntidades wE = new WsServicios.Entidades.wsEntidades();
             wsR_Almacenes vReturn = wE.gAlmacenes( parametros.Instancia, parametros.Parametros );
-
             GenericEntity<wsR_Almacenes> genericEntity = new GenericEntity<wsR_Almacenes>(vReturn){};
             return Response.ok(genericEntity, MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
