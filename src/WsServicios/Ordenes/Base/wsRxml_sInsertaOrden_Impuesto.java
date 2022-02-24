@@ -25,7 +25,7 @@ public class wsRxml_sInsertaOrden_Impuesto implements Serializable {
     @XmlElement
     public double porcentaje;
 
-/* la clase no aparece para nicaragua . el salvador
+/* la clase no aparece para nicaragua . el salvador,
 
 P_CORRELATIVOVENTA IN NUMBER,
 P_ID_IMPUESTO_EXENTO IN NUMBER, -- identificador de impuesto en ODA.
