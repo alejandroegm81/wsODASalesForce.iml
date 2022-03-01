@@ -712,24 +712,25 @@ public class wsOrdenes extends BaseClass {
             _cmd_detail.setDouble(12, det.precioProducto);
             _cmd_detail.setString(13, det.sim );
             _cmd_detail.setDouble(14, det.precioSim);
-            _cmd_detail.setString(15, det.sku);
-            _cmd_detail.setString(16, det.solicitudBilling);
-            _cmd_detail.setString(17, det.telefono);
-            _cmd_detail.setString(18, det.tipoDescuentoEspecial);
-            _cmd_detail.setString(19, det.almacen);
-            _cmd_detail.setString(20, det.codAgencia);
+            _cmd_detail.setString(15, det.skuSim);
+            _cmd_detail.setString(16, det.sku);
+            _cmd_detail.setString(17, det.solicitudBilling);
+            _cmd_detail.setString(18, det.telefono);
+            _cmd_detail.setString(19, det.tipoDescuentoEspecial);
+            _cmd_detail.setString(20, det.almacen);
 
-            _cmd_detail.setString(21, det.codigoItem);
-            _cmd_detail.setDouble(22, det.prima);
-            _cmd_detail.setDouble(23, det.montoFinanciado);
-            _cmd_detail.setDouble(24, det.combo);
-            _cmd_detail.registerOutParameter(25, 2, 100);
+            _cmd_detail.setString(21, det.codAgencia);
+            _cmd_detail.setString(22, det.codigoItem);
+            _cmd_detail.setDouble(23, det.prima);
+            _cmd_detail.setDouble(24, det.montoFinanciado);
+            _cmd_detail.setDouble(25, det.combo);
+            _cmd_detail.registerOutParameter(26, 2, 100);
 
             // ejecutar parametros
             dtDetail = db.setQuery(_cmd_detail);
             if (dtDetail.vData && dtDetail.vDBMessage.equals("")) {
 
-              int dResult = _cmd_detail.getInt(25);
+              int dResult = _cmd_detail.getInt(26);
               if ( dResult == -1) {
                 result.Datos.Resultado = "0";
                 result.vMensaje = "ERROR::Detalle de Orden con correlativo " + String.valueOf(det.correlativoVenta) + " ya existe";
@@ -772,7 +773,7 @@ public class wsOrdenes extends BaseClass {
           if (Instancia != wsInstancias.wsInstancia.ODA_503 && Instancia != wsInstancias.wsInstancia.ODA_505) {
 
             // procedimiento
-            String vQueryImp = "{CALL PKG_SIV_CAJA_ODA.insert_tax_exemption(?,?,?,?,?,?,?)}";
+            String vQueryImp = "{CALL PKG_SIV_CAJA_ODA.insert_tax_exemption(?,?,?,?,?,?,?,?)}";
             // Parametros
             _cmd_imp = _ODA.prepareCall(vQueryImp);
 
@@ -785,7 +786,11 @@ public class wsOrdenes extends BaseClass {
               _cmd_imp.setString(5, imp.actividad);
               _cmd_imp.setString(6, imp.documentoExento);
               java.sql.Date sqlFecEmision = new java.sql.Date(imp.fechaEmision.getTime());
-              _cmd_imp.setDate(6, sqlFecEmision);
+              _cmd_imp.setDate(7, sqlFecEmision);
+
+              if (Instancia == wsInstancias.wsInstancia.ODA_506) {
+                _cmd_imp.setDouble(8, imp.porcentaje);
+              }
 
 
               // ejecutar parametros
