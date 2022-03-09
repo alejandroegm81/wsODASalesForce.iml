@@ -4,6 +4,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
+// detalle de ordenes
+
 @XmlRootElement
 public class wsRxml_sInsertaOrden_Detalle implements Serializable {
     @XmlElement
