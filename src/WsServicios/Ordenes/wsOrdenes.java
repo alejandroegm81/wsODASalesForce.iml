@@ -48,7 +48,7 @@ public class wsOrdenes extends BaseClass {
     // - cod_agencia:varchar2
     // - cantidad:number:out:3
     // - estado:varchar2:out:12
-    String vQuery = "{CALL pkg_sas_genera.consulta_existencia(?,?,?,?,?)}";
+    String vQuery = "{CALL pkg_sas_genera.consulta_existencia(?,?,?,?)}";
 
     try {
       // conexión
@@ -61,18 +61,18 @@ public class wsOrdenes extends BaseClass {
       _cmd.setString(2, vParametros.codAlmacen);
       _cmd.setString(3, vParametros.codAgencia);
       _cmd.registerOutParameter(4, 3, 1000);
-      _cmd.registerOutParameter(5, 12, 1000);
+      //_cmd.registerOutParameter(5, 12, 1000);
 
       // ejecutar parametros
       dt = db.setQuery(_cmd);
       if (dt.vData) {
-        if (_cmd.getString(5).startsWith("ER")) {
+        /*if (_cmd.getString(5).startsWith("ER")) {
           result.vEstado = 0;
           result.vMensaje = "Consulta de existencias con resultado [" + _cmd.getString(5) +"]";
-        } else {
-          result.vMensaje = result.vMensaje + "[" + _cmd.getString(5)  + "]";
+        } else {*/
+          result.vMensaje = result.vMensaje ;
           result.Datos.Resultado = _cmd.getLong(4) + "";
-        }
+        //}
       } else {
         result.vEstado = 0;
         result.vMensaje = "Consulta de existencias no obtuvo resultados";
