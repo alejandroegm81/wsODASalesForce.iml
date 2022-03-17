@@ -6,6 +6,7 @@ import WsServicios.Ordenes.Response.wsR_Inconformidad;
 import WsServicios.Ordenes.Response.wsR_Orden;
 import WsServicios.Rest.Request.*;
 import db.BaseClass;
+import io.swagger.v3.oas.annotations.Operation;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -30,6 +31,9 @@ public class wsOrdenes extends BaseClass {
     @Path("gExistencias")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
+    @Operation(summary = "gExistencias",
+        tags = {"wsOrdenes"},
+        description = "Obtiene las existencias de un Material")
     public Response gExistencias(wsR_gExistencias vDatos){
         try {
 
@@ -188,6 +192,23 @@ public class wsOrdenes extends BaseClass {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+
+    @POST
+    @Path("sInsertaOrdenOnline")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response sInsertaOrdenOnline(wsR_sInsertaOrden vDatos){
+        try {
+
+            WsServicios.Ordenes.wsOrdenes wO = new WsServicios.Ordenes.wsOrdenes();
+            wsR_Orden vReturn = wO.sInsertaOrdenOnline(vDatos.Instancia, vDatos.Parametros);
+            return Response.ok(vReturn, MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            //return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), e.getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
 
 
 }
