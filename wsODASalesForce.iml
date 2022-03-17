@@ -29,5 +29,6 @@
     <orderEntry type="library" name="ApacheHttp" level="project" />
     <orderEntry type="library" name="gson" level="project" />
     <orderEntry type="library" name="javax.ws.rs-api-2.1.1" level="project" />
+    <orderEntry type="library" name="swagger" level="project" />
   </component>
 </module>
