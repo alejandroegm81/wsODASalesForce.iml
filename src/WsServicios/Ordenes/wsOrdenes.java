@@ -1089,7 +1089,7 @@ public class wsOrdenes extends BaseClass {
             dtOnline = db.setQuery(_cmd_online);
             // validando
             if (dtOnline.vData && dtOnline.vDBMessage.equals("")) {
-              // obteniendo resultados
+              // obteniendo resultadosÍ
               int vCode = _cmd_online.getInt(2);
               String vMessage = _cmd_online.getString(3);
               Long vCorrMovim = _cmd_online.getLong(4);
