@@ -1137,6 +1137,44 @@ public class wsOrdenes extends BaseClass {
     return result;
   }
 
+  // *****************************************************************************
+  // sGeneraInconformidad
+  // *****************************************************************************
+  @WebMethod(operationName = "sGeneraInconformidad")
+  public wsR_GeneraInconformidad sGeneraInconformidad (
+      @WebParam(name= "Instancia") wsInstancias.wsInstancia Instancia,
+      @WebParam(name= "vInconformidad") wsRxml_sGeneraInconformidad vInconformidad
+  ){
+
+    wsR_GeneraInconformidad result = new wsR_GeneraInconformidad();
+    // resultado
+    //  1 ->  Satisfactorio
+    //  0 ->  Error aplicando la inconformidad
+    //  -1 -> Error de aplicativo
+    result.vEstado = 1;
+    result.vMensaje = "Inconformidad generada satisfactoriamente";
+    result.Datos = new wsR_GeneraInconformidadResult();
+    result.Datos.Correlativo = "000000001";
+    result.Datos.Contrato = "100000001";
+    result.Datos.Monto = "120.00";
+    result.Datos.Nivel = "50|1D|009";
+    result.Datos.Mensaje = "Inconformidad procesada satisfactoriamente";
+
+//    result.vEstado = 0;
+//    result.vMensaje = "Inconformidad no pudo ser generada";
+//    result.Datos = new wsR_GeneraInconformidadResult();
+//    result.Datos.Correlativo = "";
+//    result.Datos.Contrato = "";
+//    result.Datos.Monto = "";
+//    result.Datos.Nivel = "";
+//    result.Datos.Mensaje = "El numero de serie proporcionado no fue encontrado en ODA";
+
+
+
+    return result;
+  }
+
+
 
   // *****************************************************************************
   // ConnecTo

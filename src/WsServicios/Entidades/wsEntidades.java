@@ -406,6 +406,52 @@ public class wsEntidades
 
   }
 
+
+  @WebMethod(operationName = "gMotivosInconformidad")
+  public wsR_MotivosInconformidad gMotivosInconformidad(
+      @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia
+  ) {
+    wsR_MotivosInconformidad vResponse = new wsR_MotivosInconformidad();
+    vResponse.vEstado = 1;
+    vResponse.vMensaje = "Detalle de motivos generado";
+
+    // validando instancia
+    if (Instancia != wsInstancias.wsInstancia.ODA_502) {
+      vResponse.vEstado = 0;
+      vResponse.vMensaje = "Proceso solo disponible para Guatemala";
+      return vResponse;
+    }
+
+    SubDataTable dt = new SubDataTable();
+    try {
+      GlobalDB db = new GlobalDB();
+      String vQuery = "select  COD_FALLA, DESCRIPCION " +
+          "from    RECEPCION_FALLAS " +
+          "where   ACTIVO = 'S' " +
+          "and     upper(DESCRIPCION) like 'INCONFORMIDAD%' " ;
+
+      dt = db.getQuery(vQuery, getConnectTo(Instancia));
+
+      if (dt.vData && dt.vRows > 1) {
+        for (int i = 1; i < dt.vRows; i++) {
+          wsR_MotivoInconformidad registro = new wsR_MotivoInconformidad();
+          registro.codigo = (((dbROW) dt.Datos.rows.get(i)).getColByName("COD_FALLA")).value_string;
+          registro.descripcion = (((dbROW) dt.Datos.rows.get(i)).getColByName("DESCRIPCION")).value_string;
+          vResponse.Datos.add(registro);
+        }
+      } else {
+        vResponse.vEstado = 0;
+        vResponse.vMensaje = "ERROR::No se obtuvieron resultados";
+      }
+    } catch (Exception e) {
+      vResponse.vEstado = -1;
+      vResponse.vMensaje = "ERROR::Consulta de motivos reporto error [" + e.getMessage() + "]";
+    }
+
+    return vResponse;
+  }
+
+
   // ***********************************************************************
   // ConnectTo
   // ***********************************************************************
