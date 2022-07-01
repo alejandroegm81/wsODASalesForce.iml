@@ -1147,6 +1147,7 @@ public class wsOrdenes extends BaseClass {
   ){
 
     wsR_GeneraInconformidad result = new wsR_GeneraInconformidad();
+
     // resultado
     //  1 ->  Satisfactorio
     //  0 ->  Error aplicando la inconformidad
@@ -1154,21 +1155,88 @@ public class wsOrdenes extends BaseClass {
     result.vEstado = 1;
     result.vMensaje = "Inconformidad generada satisfactoriamente";
     result.Datos = new wsR_GeneraInconformidadResult();
-    result.Datos.Correlativo = "000000001";
-    result.Datos.Contrato = "100000001";
-    result.Datos.Monto = "120.00";
-    result.Datos.Nivel = "50|1D|009";
-    result.Datos.Mensaje = "Inconformidad procesada satisfactoriamente";
 
-//    result.vEstado = 0;
-//    result.vMensaje = "Inconformidad no pudo ser generada";
-//    result.Datos = new wsR_GeneraInconformidadResult();
-//    result.Datos.Correlativo = "";
-//    result.Datos.Contrato = "";
-//    result.Datos.Monto = "";
-//    result.Datos.Nivel = "";
-//    result.Datos.Mensaje = "El numero de serie proporcionado no fue encontrado en ODA";
+    if (Instancia != wsInstancias.wsInstancia.ODA_502) {
+      result.vEstado = -1;
+      result.vMensaje = "Proceso solo esta permitido para Instancia Guatemala";
+      return result;
+    }
 
+    // Generando inconformidades
+    SubDataTable dt = new SubDataTable();
+    GlobalDB db = new GlobalDB();
+    OracleConnection _ODA = null;
+    CallableStatement _cmd = null;
+
+    // parameters
+    //  1-pCodAgencia     in varchar2,
+    //  2-pCodGestor      in varchar2,
+    //  3-pTelefono       in varchar2,
+    //  4-pComentarios    in varchar2,
+    //  5-pMarca          in varchar2,
+    //  6-pModelo         in varchar2,
+    //  7-pCodigoFalla    in varchar2,
+    //  8-pNumeroSerie    in varchar2,
+    //  9-pCorrelativo    out varchar2,
+    //  10-pMonto          out varchar2,
+    //  11-pContrato       out varchar2,
+    //  12-pNivel          out varchar2,
+    //  13-pEstado         out varchar2,
+    //  14-pMensaje        out varchar2
+    String vQuery = "{CALL pkg_inconformidades.genera_inconformidad(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+    try {
+      // conexión
+      _ODA = db.getODADBConnection(getConnectTo(Instancia));
+      // procedimiento
+      _cmd = _ODA.prepareCall(vQuery);
+      // parametros
+      _cmd.setString(1, vInconformidad.codAgencia);
+      _cmd.setString(2, vInconformidad.codGestor);
+      _cmd.setString(3, vInconformidad.telefono);
+      _cmd.setString(4, vInconformidad.comentarios);
+      _cmd.setString(5, vInconformidad.marca);
+      _cmd.setString(6, vInconformidad.modelo);
+      _cmd.setString(7, vInconformidad.codigoFalla);
+      _cmd.setString(8, vInconformidad.numeroSerie);
+
+      _cmd.registerOutParameter(9, 12, 1000);
+      _cmd.registerOutParameter(10, 12, 1000);
+      _cmd.registerOutParameter(11, 12, 1000);
+      _cmd.registerOutParameter(12, 12, 1000);
+      _cmd.registerOutParameter(13, 12, 1000);
+      _cmd.registerOutParameter(14, 12, 1000);
+
+      // ejecutar parametros
+      dt = db.setQuery(_cmd);
+      if (dt.vData) {
+        result.Datos.Correlativo = _cmd.getString(9);
+        result.Datos.Monto = _cmd.getString(10);
+        result.Datos.Contrato = _cmd.getString(11);
+        result.Datos.Nivel = _cmd.getString(12);
+        String vEstado  = _cmd.getString(13);
+        result.Datos.Mensaje = _cmd.getString(14);
+
+        // validando resultado de la base
+        if (!vEstado.equals("1")) {
+          result.vEstado = 0;
+          result.vMensaje = "Inconformidad no pudo ser procesada, revisar mensaje interno: " + vEstado;
+        } else {
+          result.vMensaje = "Inconformidad generada / procesada satisfactoriamente";
+        }
+      } else {
+        result.vEstado = 0;
+        result.vMensaje = "Proceso de inconformidad no obtuvo respuesta";
+
+      }
+
+    } catch (Exception e) {
+      result.vEstado = -1;
+      result.vMensaje = "Error generando inconformidad [" + e.getMessage() +"]";
+    } finally {
+      try { _cmd.close();} catch (Exception ignored) {}
+      try { _ODA.close();} catch (Exception ignored) {}
+    }
 
 
     return result;

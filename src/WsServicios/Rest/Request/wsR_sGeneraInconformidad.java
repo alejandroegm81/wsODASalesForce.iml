@@ -11,7 +11,7 @@ public class wsR_sGeneraInconformidad {
     @XmlElement
     public wsInstancias.wsInstancia Instancia;
     @XmlElement
-    public wsRxml_sGeneraInconformidad Inconformidad;
+    public wsRxml_sGeneraInconformidad Parametros;
 
 
 }
