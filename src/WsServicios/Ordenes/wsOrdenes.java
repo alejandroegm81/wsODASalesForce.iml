@@ -1026,7 +1026,10 @@ public class wsOrdenes extends BaseClass {
           if (Instancia != wsInstancias.wsInstancia.ODA_503 && Instancia != wsInstancias.wsInstancia.ODA_505) {
 
             // procedimiento
-            String vQueryImp = "{CALL PKG_SIV_CAJA_ODA.insert_tax_exemption(?,?,?,?,?,?,?,?)}";
+            String vQueryImp = "{CALL PKG_SIV_CAJA_ODA.insert_tax_exemption(?,?,?,?,?,?,?)}";
+            if (Instancia == wsInstancias.wsInstancia.ODA_506) {
+              vQueryImp = "{CALL PKG_SIV_CAJA_ODA.insert_tax_exemption(?,?,?,?,?,?,?,?)}";
+            }
             // Parametros
             _cmd_imp = _ODA.prepareCall(vQueryImp);
 
