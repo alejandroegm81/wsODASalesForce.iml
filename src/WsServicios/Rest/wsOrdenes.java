@@ -3,7 +3,6 @@ package WsServicios.Rest;
 import WsServicios.Ordenes.Response.*;
 import WsServicios.Rest.Request.*;
 import db.BaseClass;
-import io.swagger.v3.oas.annotations.Operation;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -28,9 +27,6 @@ public class wsOrdenes extends BaseClass {
     @Path("gExistencias")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Operation(summary = "gExistencias",
-        tags = {"wsOrdenes"},
-        description = "Obtiene las existencias de un Material")
     public Response gExistencias(wsR_gExistencias vDatos){
         try {
 
