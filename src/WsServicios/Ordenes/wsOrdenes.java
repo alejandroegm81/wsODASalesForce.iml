@@ -904,7 +904,7 @@ public class wsOrdenes extends BaseClass {
       _cmd.setDouble(17, vOrden.Encabezado.anticipo);
       _cmd.setString(18, vOrden.Encabezado.registroFiscal);
       _cmd.setNull(19, Types.NUMERIC);
-      _cmd.setString(20, vOrden.Encabezado.tipoDocumento);
+      _cmd.setString(20, vOrden.Encabezado.tipoDocumento + ":ONLINE");
 
       _cmd.setString(21, vOrden.Encabezado.tipoVenta);
       _cmd.setDouble(22, vOrden.Encabezado.totalDescuento);
@@ -922,15 +922,18 @@ public class wsOrdenes extends BaseClass {
 
       // ejecutar parametros
       dt = db.setQuery(_cmd);
+      System.out.println("Result => [" + dt.vData + "] / Result => [" + dt.vMessage + "] / Result => [" +  dt.vDBMessage+ "]");
       if (dt.vData && dt.vDBMessage.equals("")) {
         int hResult = _cmd.getInt(32);
         if ( hResult == -1) {
+          result.vEstado = 0;
           result.Datos.Resultado = "0";
           result.vMensaje = "ERROR::Encabezado de Orden con correlativo " + String.valueOf(vOrden.Encabezado.correlativoVenta) + " ya existe";
           // rollback
           _ODA.rollback();
 
         } else if (hResult == 0) {
+          result.vEstado = 0;
           result.Datos.Resultado = "0";
           result.vMensaje = "ERROR::Orden con correlativo " + String.valueOf(vOrden.Encabezado.correlativoVenta) + " no pudo ser insertada";
           // rollback
@@ -985,6 +988,7 @@ public class wsOrdenes extends BaseClass {
 
               int dResult = _cmd_detail.getInt(26);
               if ( dResult == -1) {
+                result.vEstado = 0;
                 result.Datos.Resultado = "0";
                 result.vMensaje = "ERROR::Detalle de Orden con correlativo " + String.valueOf(det.correlativoVenta) + " ya existe";
                 // rollback
@@ -992,6 +996,7 @@ public class wsOrdenes extends BaseClass {
                 break;
 
               } else if (dResult == 0) {
+                result.vEstado = 0;
                 result.Datos.Resultado = "0";
                 result.vMensaje = "ERROR::Detalle Orden con correlativo " + String.valueOf(det.correlativoVenta) + " no pudo ser insertada";
                 // rollback
@@ -1023,7 +1028,7 @@ public class wsOrdenes extends BaseClass {
           // CR - 506
           // HN - 504
           // PA - 507
-          if (Instancia != wsInstancias.wsInstancia.ODA_503 && Instancia != wsInstancias.wsInstancia.ODA_505) {
+          if (Instancia != wsInstancias.wsInstancia.ODA_503 && Instancia != wsInstancias.wsInstancia.ODA_505 && result.vEstado == 1) {
 
             // procedimiento
             String vQueryImp = "{CALL PKG_SIV_CAJA_ODA.insert_tax_exemption(?,?,?,?,?,?,?)}";
