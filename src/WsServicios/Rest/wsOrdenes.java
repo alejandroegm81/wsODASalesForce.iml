@@ -1,9 +1,6 @@
 package WsServicios.Rest;
 
-import WsServicios.Ordenes.Response.wsR_Anula;
-import WsServicios.Ordenes.Response.wsR_Generic;
-import WsServicios.Ordenes.Response.wsR_Inconformidad;
-import WsServicios.Ordenes.Response.wsR_Orden;
+import WsServicios.Ordenes.Response.*;
 import WsServicios.Rest.Request.*;
 import db.BaseClass;
 
@@ -171,7 +168,7 @@ public class wsOrdenes extends BaseClass {
 
 
     // **********************************************************************
-    // sInsertaOrden: PKG_SIV_CAJA_ODA
+    // sInsertaOrden: PKG_SIV_CAJA_ODA Ejecuta orden en proceso normal
     // **********************************************************************
     @POST
     @Path("sInsertaOrden")
@@ -189,6 +186,9 @@ public class wsOrdenes extends BaseClass {
         }
     }
 
+    // **********************************************************************
+    // sInsertaOrdenOnline: PKG_SIV_CAJA_ODA Ejecuta orden en proceso en línea
+    // **********************************************************************
     @POST
     @Path("sInsertaOrdenOnline")
     @Consumes(MediaType.APPLICATION_JSON)
@@ -204,6 +204,26 @@ public class wsOrdenes extends BaseClass {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
     }
+
+    // **********************************************************************
+    // sGeneraInconformidad: PKG_SIV_CAJA_ODA
+    // **********************************************************************
+    @POST
+    @Path("sGeneraInconformidad")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response sGeneraInconformidad(wsR_sGeneraInconformidad vDatos){
+        try {
+
+            WsServicios.Ordenes.wsOrdenes wO = new WsServicios.Ordenes.wsOrdenes();
+            wsR_GeneraInconformidad vReturn = wO.sGeneraInconformidad(vDatos.Instancia, vDatos.Parametros);
+            return Response.ok(vReturn, MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            //return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), e.getMessage()).build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
+
 
 
 

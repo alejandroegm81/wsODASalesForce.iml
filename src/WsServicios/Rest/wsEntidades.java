@@ -120,6 +120,23 @@ public class wsEntidades extends BaseClass {
         }
     }
 
+    // ************************************************************
+    // gAlmacenes
+    // ************************************************************
+    @POST
+    @Path("gMotivosInconformidad")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response gMotivosInconformidad(wsR_gMotivosInconformidad Parametros) {
+        try {
+            WsServicios.Entidades.wsEntidades wE = new WsServicios.Entidades.wsEntidades();
+            wsR_MotivosInconformidad vReturn = wE.gMotivosInconformidad( Parametros.Instancia );
+            GenericEntity<wsR_MotivosInconformidad> genericEntity = new GenericEntity<wsR_MotivosInconformidad>(vReturn){};
+            return Response.ok(genericEntity, MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
+    }
 
 
 }

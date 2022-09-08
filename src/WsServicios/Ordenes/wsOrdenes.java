@@ -70,7 +70,7 @@ public class wsOrdenes extends BaseClass {
           result.vEstado = 0;
           result.vMensaje = "Consulta de existencias con resultado [" + _cmd.getString(5) +"]";
         } else {*/
-                result.vMensaje = result.vMensaje;
+                result.vMensaje = result.vMensaje ;
                 result.Datos.Resultado = _cmd.getLong(4) + "";
                 //}
             } else {
@@ -81,16 +81,10 @@ public class wsOrdenes extends BaseClass {
 
         } catch (Exception e) {
             result.vEstado = -1;
-            result.vMensaje = "Consulta de existencias error [" + e.getMessage() + "]";
+            result.vMensaje = "Consulta de existencias error [" + e.getMessage() +"]";
         } finally {
-            try {
-                _cmd.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                _ODA.close();
-            } catch (Exception ignored) {
-            }
+            try { _cmd.close();} catch (Exception ignored) {}
+            try { _ODA.close();} catch (Exception ignored) {}
         }
 
 
@@ -147,9 +141,9 @@ public class wsOrdenes extends BaseClass {
                 if (!_cmd.getString(6).equals("0")) {
                     result.vEstado = 0;
                     result.Datos.Resultado = _cmd.getString(6);
-                    result.vMensaje = "Reserva de series con resultado [" + _cmd.getString(6) + "]";
+                    result.vMensaje = "Reserva de series con resultado [" + _cmd.getString(6) +"]";
                 } else {
-                    result.vMensaje = result.vMensaje + " [" + _cmd.getString(6) + "]";
+                    result.vMensaje = result.vMensaje + " [" + _cmd.getString(6)  + "]";
                     result.Datos.Resultado = _cmd.getString(6);
                 }
             } else {
@@ -160,17 +154,12 @@ public class wsOrdenes extends BaseClass {
 
         } catch (Exception e) {
             result.vEstado = -1;
-            result.vMensaje = "Reserva de series error [" + e.getMessage() + "]";
+            result.vMensaje = "Reserva de series error [" + e.getMessage() +"]";
         } finally {
-            try {
-                _cmd.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                _ODA.close();
-            } catch (Exception ignored) {
-            }
+            try { _cmd.close();} catch (Exception ignored) {}
+            try { _ODA.close();} catch (Exception ignored) {}
         }
+
 
 
         return result;
@@ -220,9 +209,9 @@ public class wsOrdenes extends BaseClass {
                 if (!_cmd.getString(3).equals("0")) {
                     result.vEstado = 0;
                     result.Datos.Resultado = _cmd.getString(3);
-                    result.vMensaje = "Liberación de series con resultado [" + _cmd.getString(3) + "]";
+                    result.vMensaje = "Liberación de series con resultado [" + _cmd.getString(3) +"]";
                 } else {
-                    result.vMensaje = result.vMensaje + " [" + _cmd.getString(3) + "]";
+                    result.vMensaje = result.vMensaje + " [" + _cmd.getString(3)  + "]";
                     result.Datos.Resultado = _cmd.getString(3);
                 }
             } else {
@@ -233,17 +222,12 @@ public class wsOrdenes extends BaseClass {
 
         } catch (Exception e) {
             result.vEstado = -1;
-            result.vMensaje = "Liberación de series error [" + e.getMessage() + "]";
+            result.vMensaje = "Liberación de series error [" + e.getMessage() +"]";
         } finally {
-            try {
-                _cmd.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                _ODA.close();
-            } catch (Exception ignored) {
-            }
+            try { _cmd.close();} catch (Exception ignored) {}
+            try { _ODA.close();} catch (Exception ignored) {}
         }
+
 
 
         return result;
@@ -306,22 +290,17 @@ public class wsOrdenes extends BaseClass {
 
             } catch (Exception e) {
                 result.vEstado = -1;
-                result.vMensaje = "Consulta inconformidad error [" + e.getMessage() + "]";
+                result.vMensaje = "Consulta inconformidad error [" + e.getMessage() +"]";
             } finally {
-                try {
-                    _cmd.close();
-                } catch (Exception ignored) {
-                }
-                try {
-                    _ODA.close();
-                } catch (Exception ignored) {
-                }
+                try { _cmd.close();} catch (Exception ignored) {}
+                try { _ODA.close();} catch (Exception ignored) {}
             }
 
         } else {
             result.vEstado = 0;
             result.vMensaje = "ERROR::Consulta inconformidad no implementada para el pais";
         }
+
 
 
         return result;
@@ -456,9 +435,9 @@ public class wsOrdenes extends BaseClass {
                     result.vEstado = 0;
                     result.Datos.Codigo = _cmd.getString(3);
                     result.Datos.Descripcion = _cmd.getString(4);
-                    result.vMensaje = "Anulación de pedido con resultado [" + _cmd.getString(3) + "]";
+                    result.vMensaje = "Anulación de pedido con resultado [" + _cmd.getString(3) +"]";
                 } else {
-                    result.vMensaje = result.vMensaje + " [" + _cmd.getString(3) + "]";
+                    result.vMensaje = result.vMensaje + " [" + _cmd.getString(3)  + "]";
                     result.Datos.Codigo = _cmd.getString(3);
                     result.Datos.Descripcion = _cmd.getString(4);
                 }
@@ -470,17 +449,12 @@ public class wsOrdenes extends BaseClass {
 
         } catch (Exception e) {
             result.vEstado = -1;
-            result.vMensaje = "Anulación de pedido error [" + e.getMessage() + "]";
+            result.vMensaje = "Anulación de pedido error [" + e.getMessage() +"]";
         } finally {
-            try {
-                _cmd.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                _ODA.close();
-            } catch (Exception ignored) {
-            }
+            try { _cmd.close();} catch (Exception ignored) {}
+            try { _ODA.close();} catch (Exception ignored) {}
         }
+
 
 
         return result;
@@ -539,20 +513,16 @@ public class wsOrdenes extends BaseClass {
 
         } catch (Exception e) {
             result.vEstado = -1;
-            result.vMensaje = "Consulta estado venta error [" + e.getMessage() + "]";
+            result.vMensaje = "Consulta estado venta error [" + e.getMessage() +"]";
         } finally {
-            try {
-                _cmd.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                _ODA.close();
-            } catch (Exception ignored) {
-            }
+            try { _cmd.close();} catch (Exception ignored) {}
+            try { _ODA.close();} catch (Exception ignored) {}
         }
 
 
+
         return result;
+
 
 
     }
@@ -610,17 +580,12 @@ public class wsOrdenes extends BaseClass {
 
         } catch (Exception e) {
             result.vEstado = -1;
-            result.vMensaje = "Consulta estado Anulación error [" + e.getMessage() + "]";
+            result.vMensaje = "Consulta estado Anulación error [" + e.getMessage() +"]";
         } finally {
-            try {
-                _cmd.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                _ODA.close();
-            } catch (Exception ignored) {
-            }
+            try { _cmd.close();} catch (Exception ignored) {}
+            try { _ODA.close();} catch (Exception ignored) {}
         }
+
 
 
         return result;
@@ -644,9 +609,7 @@ public class wsOrdenes extends BaseClass {
 
 
         // obteniendo existencias según los parametros
-        SubDataTable dt = new SubDataTable();
-        SubDataTable dtDetail = new SubDataTable();
-        SubDataTable dtImp = new SubDataTable();
+        SubDataTable dt = new SubDataTable(); SubDataTable dtDetail = new SubDataTable(); SubDataTable dtImp = new SubDataTable();
         GlobalDB db = new GlobalDB();
         OracleConnection _ODA = null;
         CallableStatement _cmd = null;
@@ -708,7 +671,7 @@ public class wsOrdenes extends BaseClass {
             dt = db.setQuery(_cmd);
             if (dt.vData && dt.vDBMessage.equals("")) {
                 int hResult = _cmd.getInt(32);
-                if (hResult == -1) {
+                if ( hResult == -1) {
                     result.Datos.Resultado = "0";
                     result.vMensaje = "ERROR::Encabezado de Orden con correlativo " + String.valueOf(vOrden.Encabezado.correlativoVenta) + " ya existe";
                     // rollback
@@ -747,7 +710,7 @@ public class wsOrdenes extends BaseClass {
 
                         _cmd_detail.setString(11, det.plazo);
                         _cmd_detail.setDouble(12, det.precioProducto);
-                        _cmd_detail.setString(13, det.sim);
+                        _cmd_detail.setString(13, det.sim );
                         _cmd_detail.setDouble(14, det.precioSim);
                         _cmd_detail.setString(15, det.skuSim);
                         _cmd_detail.setString(16, det.sku);
@@ -768,7 +731,7 @@ public class wsOrdenes extends BaseClass {
                         if (dtDetail.vData && dtDetail.vDBMessage.equals("")) {
 
                             int dResult = _cmd_detail.getInt(26);
-                            if (dResult == -1) {
+                            if ( dResult == -1) {
                                 result.Datos.Resultado = "0";
                                 result.vMensaje = "ERROR::Detalle de Orden con correlativo " + String.valueOf(det.correlativoVenta) + " ya existe";
                                 // rollback
@@ -864,30 +827,15 @@ public class wsOrdenes extends BaseClass {
 
 
         } catch (Exception e) {
-            try {
-                _ODA.rollback();
-            } catch (SQLException ignored) {
-            }
+            try { _ODA.rollback();} catch (SQLException ignored) {}
             result.vEstado = 0;
             result.Datos.Resultado = "-1";
-            result.vMensaje = "Proceso de inserción de Orden genero error [" + e.getMessage() + "]";
+            result.vMensaje = "Proceso de inserción de Orden genero error [" + e.getMessage() +"]";
         } finally {
-            try {
-                _cmd.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                _cmd_detail.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                _cmd_imp.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                _ODA.close();
-            } catch (Exception ignored) {
-            }
+            try { _cmd.close();} catch (Exception ignored) {}
+            try { _cmd_detail.close();} catch (Exception ignored) {}
+            try { _cmd_imp.close();} catch (Exception ignored) {}
+            try { _ODA.close();} catch (Exception ignored) {}
         }
 
         return result;
@@ -896,7 +844,7 @@ public class wsOrdenes extends BaseClass {
 
 
     @WebMethod(operationName = "sInsertaOrdenOnline")
-    public wsR_Orden sInsertaOrdenOnline(
+    public wsR_Orden sInsertaOrdenOnline (
         @WebParam(name = "Instancia") wsInstancias.wsInstancia Instancia,
         @WebParam(name = "vOrden") wsRxml_sInsertaOrden vOrden
     ) {
@@ -956,7 +904,7 @@ public class wsOrdenes extends BaseClass {
             _cmd.setDouble(17, vOrden.Encabezado.anticipo);
             _cmd.setString(18, vOrden.Encabezado.registroFiscal);
             _cmd.setNull(19, Types.NUMERIC);
-            _cmd.setString(20, vOrden.Encabezado.tipoDocumento);
+            _cmd.setString(20, vOrden.Encabezado.tipoDocumento + ":ONLINE");
 
             _cmd.setString(21, vOrden.Encabezado.tipoVenta);
             _cmd.setDouble(22, vOrden.Encabezado.totalDescuento);
@@ -974,15 +922,18 @@ public class wsOrdenes extends BaseClass {
 
             // ejecutar parametros
             dt = db.setQuery(_cmd);
+            System.out.println("Result => [" + dt.vData + "] / Result => [" + dt.vMessage + "] / Result => [" +  dt.vDBMessage+ "]");
             if (dt.vData && dt.vDBMessage.equals("")) {
                 int hResult = _cmd.getInt(32);
-                if (hResult == -1) {
+                if ( hResult == -1) {
+                    result.vEstado = 0;
                     result.Datos.Resultado = "0";
                     result.vMensaje = "ERROR::Encabezado de Orden con correlativo " + String.valueOf(vOrden.Encabezado.correlativoVenta) + " ya existe";
                     // rollback
                     _ODA.rollback();
 
                 } else if (hResult == 0) {
+                    result.vEstado = 0;
                     result.Datos.Resultado = "0";
                     result.vMensaje = "ERROR::Orden con correlativo " + String.valueOf(vOrden.Encabezado.correlativoVenta) + " no pudo ser insertada";
                     // rollback
@@ -1015,7 +966,7 @@ public class wsOrdenes extends BaseClass {
 
                         _cmd_detail.setString(11, det.plazo);
                         _cmd_detail.setDouble(12, det.precioProducto);
-                        _cmd_detail.setString(13, det.sim);
+                        _cmd_detail.setString(13, det.sim );
                         _cmd_detail.setDouble(14, det.precioSim);
                         _cmd_detail.setString(15, det.skuSim);
                         _cmd_detail.setString(16, det.sku);
@@ -1036,7 +987,8 @@ public class wsOrdenes extends BaseClass {
                         if (dtDetail.vData && dtDetail.vDBMessage.equals("")) {
 
                             int dResult = _cmd_detail.getInt(26);
-                            if (dResult == -1) {
+                            if ( dResult == -1) {
+                                result.vEstado = 0;
                                 result.Datos.Resultado = "0";
                                 result.vMensaje = "ERROR::Detalle de Orden con correlativo " + String.valueOf(det.correlativoVenta) + " ya existe";
                                 // rollback
@@ -1044,6 +996,7 @@ public class wsOrdenes extends BaseClass {
                                 break;
 
                             } else if (dResult == 0) {
+                                result.vEstado = 0;
                                 result.Datos.Resultado = "0";
                                 result.vMensaje = "ERROR::Detalle Orden con correlativo " + String.valueOf(det.correlativoVenta) + " no pudo ser insertada";
                                 // rollback
@@ -1075,12 +1028,12 @@ public class wsOrdenes extends BaseClass {
                     // CR - 506
                     // HN - 504
                     // PA - 507
-                    if (Instancia != wsInstancias.wsInstancia.ODA_503 && Instancia != wsInstancias.wsInstancia.ODA_505) {
+                    if (Instancia != wsInstancias.wsInstancia.ODA_503 && Instancia != wsInstancias.wsInstancia.ODA_505 && result.vEstado == 1) {
 
                         // procedimiento
                         String vQueryImp = "{CALL PKG_SIV_CAJA_ODA.insert_tax_exemption(?,?,?,?,?,?,?)}";
                         if (Instancia == wsInstancias.wsInstancia.ODA_506) {
-                            vQueryImp = "{CALL PKG_SIV_CAJA_ODA.insert_tax_exemption(?,?,?,?,?,?)}";
+                            vQueryImp = "{CALL PKG_SIV_CAJA_ODA.insert_tax_exemption(?,?,?,?,?,?,?,?)}";
                         }
                         // Parametros
                         _cmd_imp = _ODA.prepareCall(vQueryImp);
@@ -1150,7 +1103,7 @@ public class wsOrdenes extends BaseClass {
                             Long vCorrMovim = _cmd_online.getLong(4);
 
                             result.vEstado = vCode;
-                            result.vMensaje = vCode == 1 ? "OK::Orden Ejecutada Satisfactoriamente[correlativo-oda:" + vCorrMovim + "]" : "Error::Orden con Error en su ejecución";
+                            result.vMensaje = vCode == 1 ? "OK::Orden Ejecutada Satisfactoriamente[correlativo-oda:" + vCorrMovim +"]" : "Error::Orden con Error en su ejecución";
                             result.Datos.Resultado = vMessage;
 
                             // commit;
@@ -1165,15 +1118,7 @@ public class wsOrdenes extends BaseClass {
 
                         }
 
-                    } else {
-                        result.vEstado = 0;
-                        result.Datos.Resultado = "0";
-                        result.vMensaje = "ERROR::Inserción de Orden genero error - no se ejecuto el procesamiento";
-                        // rollback
-                        _ODA.rollback();
-
                     }
-
 
                 }
             } else {
@@ -1186,34 +1131,125 @@ public class wsOrdenes extends BaseClass {
 
 
         } catch (Exception e) {
-            try {
-                _ODA.rollback();
-            } catch (SQLException ignored) {
-            }
+            try { _ODA.rollback();} catch (SQLException ignored) {}
             result.vEstado = 0;
             result.Datos.Resultado = "-1";
-            result.vMensaje = "Proceso de inserción de Orden genero error [" + e.getMessage() + "]";
+            result.vMensaje = "Proceso de inserción de Orden genero error [" + e.getMessage() +"]";
         } finally {
-            try {
-                _cmd.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                _cmd_detail.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                _cmd_imp.close();
-            } catch (Exception ignored) {
-            }
-            try {
-                _ODA.close();
-            } catch (Exception ignored) {
-            }
+            try { _cmd.close();} catch (Exception ignored) {}
+            try { _cmd_detail.close();} catch (Exception ignored) {}
+            try { _cmd_imp.close();} catch (Exception ignored) {}
+            try { _ODA.close();} catch (Exception ignored) {}
         }
 
         return result;
     }
+
+    // *****************************************************************************
+    // sGeneraInconformidad
+    // *****************************************************************************
+    @WebMethod(operationName = "sGeneraInconformidad")
+    public wsR_GeneraInconformidad sGeneraInconformidad (
+        @WebParam(name= "Instancia") wsInstancias.wsInstancia Instancia,
+        @WebParam(name= "vInconformidad") wsRxml_sGeneraInconformidad vInconformidad
+    ){
+
+        wsR_GeneraInconformidad result = new wsR_GeneraInconformidad();
+
+        // resultado
+        //  1 ->  Satisfactorio
+        //  0 ->  Error aplicando la inconformidad
+        //  -1 -> Error de aplicativo
+        result.vEstado = 1;
+        result.vMensaje = "Inconformidad generada satisfactoriamente";
+        result.Datos = new wsR_GeneraInconformidadResult();
+
+        if (Instancia != wsInstancias.wsInstancia.ODA_502) {
+            result.vEstado = -1;
+            result.vMensaje = "Proceso solo esta permitido para Instancia Guatemala";
+            return result;
+        }
+
+        // Generando inconformidades
+        SubDataTable dt = new SubDataTable();
+        GlobalDB db = new GlobalDB();
+        OracleConnection _ODA = null;
+        CallableStatement _cmd = null;
+
+        // parameters
+        //  1-pCodAgencia     in varchar2,
+        //  2-pCodGestor      in varchar2,
+        //  3-pTelefono       in varchar2,
+        //  4-pComentarios    in varchar2,
+        //  5-pMarca          in varchar2,
+        //  6-pModelo         in varchar2,
+        //  7-pCodigoFalla    in varchar2,
+        //  8-pNumeroSerie    in varchar2,
+        //  9-pCorrelativo    out varchar2,
+        //  10-pMonto          out varchar2,
+        //  11-pContrato       out varchar2,
+        //  12-pNivel          out varchar2,
+        //  13-pEstado         out varchar2,
+        //  14-pMensaje        out varchar2
+        String vQuery = "{CALL pkg_inconformidades.genera_inconformidad(?,?,?,?,?,?,?,?,?,?,?,?,?,?)}";
+
+        try {
+            // conexión
+            _ODA = db.getODADBConnection(getConnectTo(Instancia));
+            // procedimiento
+            _cmd = _ODA.prepareCall(vQuery);
+            // parametros
+            _cmd.setString(1, vInconformidad.codAgencia);
+            _cmd.setString(2, vInconformidad.codGestor);
+            _cmd.setString(3, vInconformidad.telefono);
+            _cmd.setString(4, vInconformidad.comentarios);
+            _cmd.setString(5, vInconformidad.marca);
+            _cmd.setString(6, vInconformidad.modelo);
+            _cmd.setString(7, vInconformidad.codigoFalla);
+            _cmd.setString(8, vInconformidad.numeroSerie);
+
+            _cmd.registerOutParameter(9, 12, 1000);
+            _cmd.registerOutParameter(10, 12, 1000);
+            _cmd.registerOutParameter(11, 12, 1000);
+            _cmd.registerOutParameter(12, 12, 1000);
+            _cmd.registerOutParameter(13, 12, 1000);
+            _cmd.registerOutParameter(14, 12, 1000);
+
+            // ejecutar parametros
+            dt = db.setQuery(_cmd);
+            if (dt.vData) {
+                result.Datos.Correlativo = _cmd.getString(9);
+                result.Datos.Monto = _cmd.getString(10);
+                result.Datos.Contrato = _cmd.getString(11);
+                result.Datos.Nivel = _cmd.getString(12);
+                String vEstado  = _cmd.getString(13);
+                result.Datos.Mensaje = _cmd.getString(14);
+
+                // validando resultado de la base
+                if (!vEstado.equals("1")) {
+                    result.vEstado = 0;
+                    result.vMensaje = "Inconformidad no pudo ser procesada, revisar mensaje interno: " + vEstado;
+                } else {
+                    result.vMensaje = "Inconformidad generada / procesada satisfactoriamente";
+                }
+            } else {
+                result.vEstado = 0;
+                result.vMensaje = "Proceso de inconformidad no obtuvo respuesta";
+
+            }
+
+        } catch (Exception e) {
+            result.vEstado = -1;
+            result.vMensaje = "Error generando inconformidad [" + e.getMessage() +"]";
+        } finally {
+            try { _cmd.close();} catch (Exception ignored) {}
+            try { _ODA.close();} catch (Exception ignored) {}
+        }
+
+
+        return result;
+    }
+
 
 
     // *****************************************************************************
